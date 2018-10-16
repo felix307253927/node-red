@@ -39,11 +39,11 @@ var settings;
  * @param constructor - the constructor function for this node type
  * @param opts - optional additional options for the node
  */
-function registerType(nodeSet,type,constructor,opts) {
+function registerType(nodeSet, type, constructor, opts) {
     if (typeof type !== "string") {
         // This is someone calling the api directly, rather than via the
         // RED object provided to a node. Log a warning
-        log.warn("["+nodeSet+"] Deprecated call to RED.runtime.nodes.registerType - node-set name must be provided as first argument");
+        log.warn("[" + nodeSet + "] Deprecated call to RED.runtime.nodes.registerType - node-set name must be provided as first argument");
         opts = constructor;
         constructor = type;
         type = nodeSet;
@@ -51,17 +51,17 @@ function registerType(nodeSet,type,constructor,opts) {
     }
     if (opts) {
         if (opts.credentials) {
-            credentials.register(type,opts.credentials);
+            credentials.register(type, opts.credentials);
         }
         if (opts.settings) {
             try {
-                settings.registerNodeSettings(type,opts.settings);
-            } catch(err) {
-                log.warn("["+type+"] "+err.message);
+                settings.registerNodeSettings(type, opts.settings);
+            } catch (err) {
+                log.warn("[" + type + "] " + err.message);
             }
         }
     }
-    registry.registerType(nodeSet,type,constructor);
+    registry.registerType(nodeSet, type, constructor);
 }
 
 /**
@@ -70,8 +70,8 @@ function registerType(nodeSet,type,constructor,opts) {
  * @param node the node object being created
  * @param def the instance definition for the node
  */
-function createNode(node,def) {
-    Node.call(node,def);
+function createNode(node, def) {
+    Node.call(node, def);
     var id = node.id;
     if (def._alias) {
         id = def._alias;
@@ -83,7 +83,7 @@ function createNode(node,def) {
         // allow $(foo) syntax to substitute env variables for credentials also...
         for (var p in creds) {
             if (creds.hasOwnProperty(p)) {
-                flowUtil.mapEnvVarProperties(creds,p);
+                flowUtil.mapEnvVarProperties(creds, p);
             }
         }
         node.credentials = creds;
@@ -104,40 +104,55 @@ function init(runtime) {
 
 function disableNode(id) {
     flows.checkTypeInUse(id);
-    return registry.disableNode(id).then(function(info) {
-        reportNodeStateChange(info,false);
+    return registry.disableNode(id).then(function (info) {
+        reportNodeStateChange(info, false);
         return info;
     });
 }
 
 function enableNode(id) {
-    return registry.enableNode(id).then(function(info) {
-        reportNodeStateChange(info,true);
+    return registry.enableNode(id).then(function (info) {
+        reportNodeStateChange(info, true);
         return info;
     });
 }
 
-function reportNodeStateChange(info,enabled) {
+function reportNodeStateChange(info, enabled) {
     if (info.enabled === enabled && !info.err) {
-        events.emit("runtime-event",{id:"node/"+(enabled?"enabled":"disabled"),retain:false,payload:info});
-        log.info(" "+log._("api.nodes."+(enabled?"enabled":"disabled")));
-        for (var i=0;i<info.types.length;i++) {
-            log.info(" - "+info.types[i]);
+        events.emit("runtime-event", {
+            id: "node/" + (enabled ? "enabled" : "disabled"),
+            retain: false,
+            payload: info
+        });
+        log.info(" " + log._("api.nodes." + (enabled ? "enabled" : "disabled")));
+        for (var i = 0; i < info.types.length; i++) {
+            log.info(" - " + info.types[i]);
         }
     } else if (enabled && info.err) {
-    log.warn(log._("api.nodes.error-enable"));
-        log.warn(" - "+info.name+" : "+info.err);
+        log.warn(log._("api.nodes.error-enable"));
+        log.warn(" - " + info.name + " : " + info.err);
     }
 }
 
-function installModule(module,version) {
+function installModule(module, version) {
     var ex_module = registry.getModuleInfo(module);
     var isUpgrade = !!ex_module;
-    return registry.installModule(module,version).then(function(info) {
+    return registry.installModule(module, version).then(function (info) {
         if (isUpgrade) {
-            events.emit("runtime-event",{id:"node/upgraded",retain:false,payload:{module:module,version:version}});
+            events.emit("runtime-event", {
+                id: "node/upgraded",
+                retain: false,
+                payload: {
+                    module: module,
+                    version: version
+                }
+            });
         } else {
-            events.emit("runtime-event",{id:"node/added",retain:false,payload:info.nodes});
+            events.emit("runtime-event", {
+                id: "node/added",
+                retain: false,
+                payload: info.nodes
+            });
         }
         return info;
     });
@@ -146,19 +161,26 @@ function installModule(module,version) {
 function uninstallModule(module) {
     var info = registry.getModuleInfo(module);
     if (!info) {
-        throw new Error(log._("nodes.index.unrecognised-module", {module:module}));
+        throw new Error(log._("nodes.index.unrecognised-module", {
+            module: module
+        }));
     } else {
-        for (var i=0;i<info.nodes.length;i++) {
-            flows.checkTypeInUse(module+"/"+info.nodes[i].name);
+        for (var i = 0; i < info.nodes.length; i++) {
+            flows.checkTypeInUse(module + "/" + info.nodes[i].name);
         }
-        return registry.uninstallModule(module).then(function(list) {
-            events.emit("runtime-event",{id:"node/removed",retain:false,payload:list});
+        return registry.uninstallModule(module).then(function (list) {
+            events.emit("runtime-event", {
+                id: "node/removed",
+                retain: false,
+                payload: list
+            });
             return list;
         });
     }
 }
 
 module.exports = {
+
     // Lifecycle
     init: init,
     load: registry.load,
@@ -197,16 +219,16 @@ module.exports = {
     cleanModuleList: registry.cleanModuleList,
 
     // Flow handling
-    loadFlows:  flows.load,
+    loadFlows: flows.load,
     startFlows: flows.startFlows,
-    stopFlows:  flows.stopFlows,
-    setFlows:   flows.setFlows,
-    getFlows:   flows.getFlows,
+    stopFlows: flows.stopFlows,
+    setFlows: flows.setFlows,
+    getFlows: flows.getFlows,
 
-    addFlow:     flows.addFlow,
-    getFlow:     flows.getFlow,
-    updateFlow:  flows.updateFlow,
-    removeFlow:  flows.removeFlow,
+    addFlow: flows.addFlow,
+    getFlow: flows.getFlow,
+    updateFlow: flows.updateFlow,
+    removeFlow: flows.removeFlow,
     // disableFlow: flows.disableFlow,
     // enableFlow:  flows.enableFlow,
 

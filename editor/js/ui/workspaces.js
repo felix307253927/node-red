@@ -29,8 +29,9 @@ RED.workspaces = (function() {
             do {
                 workspaceIndex += 1;
             } while ($("#workspace-tabs a[title='"+RED._('workspace.defaultName',{number:workspaceIndex})+"']").size() !== 0);
-
-            ws = {type:"tab",id:tabId,disabled: false,info:"",label:RED._('workspace.defaultName',{number:workspaceIndex})};
+            // default
+            var info = "双击选项卡或者在设置菜单中编辑场景信息"
+            ws = {type:"tab",id:tabId,disabled: false,info: info,label:RED._('workspace.defaultName',{number:workspaceIndex})};
             RED.nodes.addWorkspace(ws);
             workspace_tabs.addTab(ws);
             workspace_tabs.activateTab(tabId);
@@ -66,7 +67,7 @@ RED.workspaces = (function() {
                 {
                     id: "node-dialog-delete",
                     class: 'leftButton'+((workspaceTabCount === 1)?" disabled":""),
-                    text: RED._("common.label.delete"), //'<i class="fa fa-trash"></i>',
+                    text: RED._("common.label.delete")+"dd", //'<i class="fa fa-trash"></i>',
                     click: function() {
                         deleteWorkspace(workspace);
                         RED.tray.close();
@@ -219,16 +220,18 @@ RED.workspaces = (function() {
         workspace_tabs = RED.tabs.create({
             id: "workspace-tabs",
             onchange: function(tab) {
-                var event = {
-                    old: activeWorkspace
+                if(tab){
+                    var event = {
+                        old: activeWorkspace
+                    }
+                    activeWorkspace = tab.id;
+                    event.workspace = activeWorkspace;
+                    // $("#workspace").toggleClass("workspace-disabled",tab.disabled);
+                    RED.events.emit("workspace:change",event);
+                    window.location.hash = 'flow/'+tab.id;
+                    RED.sidebar.config.refresh();
+                    RED.view.focus();
                 }
-                activeWorkspace = tab.id;
-                event.workspace = activeWorkspace;
-                // $("#workspace").toggleClass("workspace-disabled",tab.disabled);
-                RED.events.emit("workspace:change",event);
-                window.location.hash = 'flow/'+tab.id;
-                RED.sidebar.config.refresh();
-                RED.view.focus();
             },
             onclick: function(tab) {
                 RED.view.focus();
@@ -267,7 +270,7 @@ RED.workspaces = (function() {
                 RED.nodes.dirty(true);
                 setWorkspaceOrder(newOrder);
             },
-            minimumActiveTabWidth: 150,
+            minimumActiveTabWidth: 100,
             scrollable: true,
             addButton: function() {
                 addWorkspace();
@@ -336,6 +339,7 @@ RED.workspaces = (function() {
         init: init,
         add: addWorkspace,
         remove: removeWorkspace,
+        delete: deleteWorkspace,
         order: setWorkspaceOrder,
         edit: editWorkspace,
         contains: function(id) {

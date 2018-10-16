@@ -17,16 +17,14 @@
 // The `https` setting requires the `fs` module. Uncomment the following
 // to make it available:
 //var fs = require("fs");
-
 module.exports = {
     // the tcp port that the Node-RED web server is listening on
-    uiPort: process.env.PORT || 1880,
-
+    uiPort: 6180,
     // By default, the Node-RED UI accepts connections on all IPv4 interfaces.
     // To listen on all IPv6 addresses, set uiHost to "::",
     // The following property can be used to listen on a specific interface. For
     // example, the following would only allow connections from the local machine.
-    //uiHost: "127.0.0.1",
+    uiHost: "0.0.0.0",
 
     // Retry time in milliseconds for MQTT connections
     mqttReconnectTime: 15000,
@@ -62,7 +60,7 @@ module.exports = {
     //tlsConfigDisableLocalFiles: true,
 
     // Colourise the console output of the debug node
-    //debugUseColors: true,
+    debugUseColors: true,
 
     // The file containing the flows. If not set, it defaults to flows_<hostname>.json
     //flowFile: 'flows.json',
@@ -119,14 +117,7 @@ module.exports = {
     // -----------------
     // To password protect the Node-RED editor and admin API, the following
     // property can be used. See http://nodered.org/docs/security.html for details.
-    //adminAuth: {
-    //    type: "credentials",
-    //    users: [{
-    //        username: "admin",
-    //        password: "$2a$08$zZWtXTja0fB1pzD4sHCMyOCMYz2Z6dNbM6tl8sJogENOMcxWV9DN.",
-    //        permissions: "*"
-    //    }]
-    //},
+    // adminAuth: require("./user-authentication"),
 
     // To password protect the node-defined HTTP endpoints (httpNodeRoot), or
     // the static content (httpStatic), the following properties can be used.

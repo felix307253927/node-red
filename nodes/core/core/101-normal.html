@@ -1,0 +1,59 @@
+
+<!-- normal html file that corresponds to the 99-normal.js file              -->
+<!-- This creates and configures the onscreen elements of the node           -->
+
+<!-- If you use this as a template, update the copyright with your own name. -->
+
+<!-- First, the content of the edit dialog is defined.                       -->
+
+<script type="text/x-red" data-template-name="normal">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-text"><i class="fa fa-tag"></i> text</label>
+        <input type="text" id="node-input-text" placeholder="text">
+    </div>
+    <div class="form-row">
+        <label for="node-input-URL"><i class="fa fa-tag"></i> URL</label>
+        <input type="text" id="node-input-URL" placeholder="URL">
+    </div>
+</script>
+
+
+<!-- Next, some simple help text is provided for the node.                   -->
+<script type="text/x-red" data-help-name="normal">
+    <p>子节点</p>
+    <p>这是对话节点</p>
+</script>
+
+<!-- Finally, the node type is registered along with all of its properties   -->
+<!-- The example below shows a small subset of the properties that can be set-->
+<script type="text/javascript">
+    RED.nodes.registerType('normal',{
+        category: 'node',      // the palette category
+        defaults: {
+            name: {
+                value: ""
+            },
+            text: {
+                value: ""
+            },
+            URL: {
+                value: ""
+            }
+        },
+        inputs:1,               // set the number of inputs - only 0 or 1
+        outputs:1,              // set the number of outputs - 0 to n
+        color: "#c7e9c0",          // set icon color
+        // set the icon (held in icons dir below where you save the node)
+        icon: "switch.png",     // saved in  icons/myicon.png
+        label: function() {     // sets the default label contents
+            return this.name||"normal";
+        },
+        labelStyle: function() { // sets the class to apply to the label
+            return this.name?"node_label_italic":"";
+        }
+    });
+</script>

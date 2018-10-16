@@ -19,7 +19,7 @@
         "notification": {
             "error": "<strong>错误</strong>: __message__",
             "errors": {
-                "not-deployed": "节点未部署",
+                "not-deployed": "节点未保存",
                 "no-response": "服务器无反应",
                 "unexpected": "发生意外错误 (__status__) __message__"
             }
@@ -308,7 +308,7 @@
         "label": {
             "unknown": "未知"
         },
-        "tip": "<p>此节点是您安装，但Node-RED所不知道的类型。</p><p><i>如果在此状态下部署节点，那么它的配置将被保留，但是流程将不会启动，直到安装缺少的类型。</i></p><p>有关更多帮助，请参阅信息侧栏</p>"
+        "tip": "<p>此节点是您安装，但Node-RED所不知道的类型。</p><p><i>如果在此状态下保存节点，那么它的配置将被保留，但是流程将不会启动，直到安装缺少的类型。</i></p><p>有关更多帮助，请参阅信息侧栏</p>"
     },
     "mqtt": {
         "label": {
@@ -714,7 +714,7 @@
             "gpiopin": "GPIO",
             "selectpin": "选择引脚",
             "resistor": "电阻?",
-            "readinitial": "在部署/重启时读取引脚的初始状态?",
+            "readinitial": "在保存/重启时读取引脚的初始状态?",
             "type": "类型",
             "initpin": "初始化引脚状态?",
             "debounce": "去抖动",

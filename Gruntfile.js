@@ -182,7 +182,8 @@ module.exports = function(grunt) {
                         "editor/vendor/jquery/js/jquery.ui.touch-punch.min.js",
                         "editor/vendor/marked/marked.min.js",
                         "editor/vendor/d3/d3.v3.min.js",
-                        "editor/vendor/i18next/i18next.min.js"
+                        "editor/vendor/i18next/i18next.min.js",
+                        "editor/vendor/yaml/js-yaml.min.js"
                     ],
                     "public/vendor/vendor.css": [
                         // TODO: resolve relative resource paths in
@@ -328,6 +329,16 @@ module.exports = function(grunt) {
         copy: {
             build: {
                 files:[
+                    // start dev file
+                    {
+                        src: 'editor/js/main.js',
+                        dest: 'public/red/main.min.js'
+                    },
+                    {
+                        src: 'public/red/red.js',
+                        dest: 'public/red/red.min.js'
+                    },
+                    // end
                     {
                         src: 'editor/js/main.js',
                         dest: 'public/red/main.js'
@@ -501,7 +512,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build',
         'Builds editor content',
-        ['clean:build','jsonlint','concat:build','concat:vendor','copy:build','uglify:build','sass:build','attachCopyright']);
+        ['clean:build','jsonlint','concat:build','concat:vendor','copy:build',/* 'uglify:build', */'sass:build','attachCopyright']);
 
     grunt.registerTask('dev',
         'Developer mode: run node-red, watch for source changes and build/restart',

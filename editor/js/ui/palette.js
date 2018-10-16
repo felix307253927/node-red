@@ -17,7 +17,8 @@
 RED.palette = (function() {
 
     var exclusion = ['config','unknown','deprecated'];
-    var coreCategories = ['subflows', 'input', 'output', 'function', 'social', 'mobile', 'storage', 'analysis', 'advanced'];
+    // var coreCategories = ['subflows', 'input', 'output', 'function', 'social', 'mobile', 'storage', 'analysis', 'advanced'];
+    var coreCategories = ['node'];
 
     var categoryContainers = {};
 

@@ -11,6 +11,8 @@
   "main": "red/red.js",
   "scripts": {
     "start": "node red.js",
+    "predev": "grunt build",
+    "dev": "node red.js",
     "test": "grunt",
     "build": "grunt build"
   },

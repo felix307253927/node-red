@@ -1,7 +1,7 @@
 {
     "common": {
         "label": {
-            "name": "姓名",
+            "name": "名字",
             "ok": "确认",
             "done": "完成",
             "cancel": "取消",
@@ -59,7 +59,7 @@
             "selectionToSubflow": "将选择部分更改为子流程",
             "flows": "流程",
             "add": "增加",
-            "rename": "重命名",
+            "rename": "修改",
             "delete": "删除",
             "keyboardShortcuts": "键盘快捷方式",
             "login": "登陆",
@@ -78,14 +78,14 @@
         "notAuthorized": "未授权",
         "errors": {
             "settings": "设置信息需要登陆后才能访问",
-            "deploy": "改动需要登陆后才能部署",
+            "deploy": "改动需要登陆后才能保存",
             "notAuthorized": "此操作需要登陆后才能执行"
         }
     },
     "notification": {
         "warning": "<strong>警告</strong>: __message__",
         "warnings": {
-            "undeployedChanges": "节点中存在未部署的更改",
+            "undeployedChanges": "节点中存在未保存的更改",
             "nodeActionDisabled": "节点动作在子流程中被禁用",
             "missing-types": "流程由于缺少节点类型而停止。请检查日志的详细信息",
             "restartRequired": "Node-RED必须重新启动，以启用升级的模块"
@@ -103,7 +103,7 @@
     "clipboard": {
         "nodes": "节点",
         "selectNodes": "选择上面的文本并复制到剪贴板",
-        "pasteNodes": "在这里粘贴节点",
+        "pasteNodes": "在这里粘贴节点(只支持json格式)",
         "importNodes": "导入节点",
         "exportNodes": "导出节点至剪贴板",
         "importUnrecognised": "导入了无法识别的类型:",
@@ -116,8 +116,8 @@
             "selected": "已选择的节点",
             "current": "现在的节点",
             "all": "所有流程",
-            "compact": "紧凑",
-            "formatted": "已格式化",
+            "compact": "JSON",
+            "formatted": "YAML",
             "copy": "导出到剪贴板"
         },
         "import": {
@@ -129,15 +129,15 @@
         "copyMessageValue_truncated": "已复制舍弃的数值"
     },
     "deploy": {
-        "deploy": "部署",
+        "deploy": "保存",
         "full": "全面",
-        "fullDesc": "在工作区中部署所有内容",
+        "fullDesc": "在工作区中保存所有内容",
         "modifiedFlows": "已修改的流程",
-        "modifiedFlowsDesc": "只部署包含已更改节点的流",
+        "modifiedFlowsDesc": "只保存包含已更改节点的流",
         "modifiedNodes": "已更改的节点",
-        "modifiedNodesDesc": "只部署已经更改的节点",
-        "successfulDeploy": "部署成功",
-        "deployFailed": "部署失败: __message__",
+        "modifiedNodesDesc": "只保存已经更改的节点",
+        "successfulDeploy": "保存成功",
+        "deployFailed": "保存失败: __message__",
         "unusedConfigNodes": "您有一些未使用的配置节点",
         "unusedConfigNodesLink": "点击此处查看它们",
         "errors": {
@@ -146,21 +146,21 @@
         "confirm": {
             "button": {
                 "ignore": "忽略",
-                "confirm": "确认部署",
+                "confirm": "确认保存",
                 "review": "查看更改",
                 "cancel": "取消",
                 "merge": "合并",
-                "overwrite": "忽略 & 部署"
+                "overwrite": "忽略 & 保存"
             },
-            "undeployedChanges": "您有未部署的更改。\n\n离开此页面将丢失这些更改。",
+            "undeployedChanges": "您有未保存的更改。\n\n离开此页面将丢失这些更改。",
             "improperlyConfigured": "工作区包含一些未正确配置的节点:",
             "unknown": "工作区包含一些未知的节点类型:",
-            "confirm": "你确定要部署吗?",
+            "confirm": "你确定要保存吗?",
             "conflict": "服务器正在运行较新的一组流程。",
             "backgroundUpdate": "服务器上的流程已更新。",
             "conflictChecking": "检查是否可以自动合并更改",
             "conflictAutoMerge": "此更改不包括冲突，可以自动合并",
-            "conflictManualMerge": "这些更改包括了在部署之前必须解决的冲突。"
+            "conflictManualMerge": "这些更改包括了在保存之前必须解决的冲突。"
         }
     },
     "diff": {
@@ -268,7 +268,8 @@
             "social": "社交",
             "storage": "存储",
             "analysis": "分析",
-            "advanced": "高级"
+            "advanced": "高级",
+            "node": "节点"
         },
         "event": {
             "nodeAdded": "添加到面板中的节点:",

@@ -312,8 +312,16 @@ RED.tabs = (function() {
             addTab: function(tab) {
                 tabs[tab.id] = tab;
                 var li = $("<li/>",{class:"red-ui-tab"}).appendTo(ul);
+                var close = $("<a/>" , {class:"red-ui-tab-close"}).appendTo(li);
+                $("<i>", {class:"fa fa-times"}).appendTo(close)
                 li.attr('id',"red-ui-tab-"+(tab.id.replace(".","-")));
                 li.data("tabId",tab.id);
+                close.attr('href', 'javascript:；')
+                close.on("click", function(e){
+                    e.preventDefault()
+                    RED.workspaces.delete(RED.nodes.workspace(tab.id))
+                    RED.tray.close();
+                })
 
                 if (options.maximumTabWidth) {
                     li.css("maxWidth",options.maximumTabWidth+"px");

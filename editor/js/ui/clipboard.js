@@ -15,7 +15,7 @@
  **/
 
 
-RED.clipboard = (function() {
+RED.clipboard = (function () {
 
     var dialog;
     var dialogContainer;
@@ -31,96 +31,94 @@ RED.clipboard = (function() {
                 autoOpen: false,
                 width: 500,
                 resizable: false,
-                buttons: [
-                    {
+                buttons: [{
                         id: "clipboard-dialog-cancel",
                         text: RED._("common.label.cancel"),
-                        click: function() {
-                            $( this ).dialog( "close" );
+                        click: function () {
+                            $(this).dialog("close");
                         }
                     },
                     {
                         id: "clipboard-dialog-close",
                         class: "primary",
                         text: RED._("common.label.close"),
-                        click: function() {
-                            $( this ).dialog( "close" );
+                        click: function () {
+                            $(this).dialog("close");
                         }
                     },
                     {
                         id: "clipboard-dialog-copy",
                         class: "primary",
                         text: RED._("clipboard.export.copy"),
-                        click: function() {
+                        click: function () {
                             $("#clipboard-export").select();
                             document.execCommand("copy");
                             document.getSelection().removeAllRanges();
                             RED.notify(RED._("clipboard.nodesExported"));
-                            $( this ).dialog( "close" );
+                            $(this).dialog("close");
                         }
                     },
                     {
                         id: "clipboard-dialog-ok",
                         class: "primary",
                         text: RED._("common.label.import"),
-                        click: function() {
-                            RED.view.importNodes($("#clipboard-import").val(),$("#import-tab > a.selected").attr('id') === 'import-tab-new');
-                            $( this ).dialog( "close" );
+                        click: function () {
+                            RED.view.importNodes($("#clipboard-import").val(), $("#import-tab > a.selected").attr('id') === 'import-tab-new');
+                            $(this).dialog("close");
                         }
                     }
                 ],
-                open: function(e) {
+                open: function (e) {
                     $(this).parent().find(".ui-dialog-titlebar-close").hide();
                 },
-                close: function(e) {
-                }
+                close: function (e) {}
             });
 
         dialogContainer = dialog.children(".dialog-form");
 
         exportNodesDialog =
-            '<div class="form-row">'+
-                '<label style="width:auto;margin-right: 10px;" data-i18n="clipboard.export.copy"></label>'+
-                '<span id="export-range-group" class="button-group">'+
-                    '<a id="export-range-selected" class="editor-button toggle" href="#" data-i18n="clipboard.export.selected"></a>'+
-                    '<a id="export-range-flow" class="editor-button toggle" href="#" data-i18n="clipboard.export.current"></a>'+
-                    '<a id="export-range-full" class="editor-button toggle" href="#" data-i18n="clipboard.export.all"></a>'+
-                '</span>'+
-                '</div>'+
-            '<div class="form-row">'+
-                '<textarea readonly style="resize: none; width: 100%; border-radius: 4px;font-family: monospace; font-size: 12px; background:#f3f3f3; padding-left: 0.5em; box-sizing:border-box;" id="clipboard-export" rows="5"></textarea>'+
-            '</div>'+
-            '<div class="form-row" style="text-align: right;">'+
-                '<span id="export-format-group" class="button-group">'+
-                    '<a id="export-format-mini" class="editor-button editor-button-small toggle" href="#" data-i18n="clipboard.export.compact"></a>'+
-                    '<a id="export-format-full" class="editor-button editor-button-small toggle" href="#" data-i18n="clipboard.export.formatted"></a>'+
-                '</span>'+
+            '<div class="form-row">' +
+            '<label style="width:auto;margin-right: 10px;" data-i18n="clipboard.export.copy"></label>' +
+            '<span id="export-range-group" class="button-group">' +
+            '<a id="export-range-selected" class="editor-button toggle" href="#" data-i18n="clipboard.export.selected"></a>' +
+            '<a id="export-range-flow" class="editor-button toggle" href="#" data-i18n="clipboard.export.current"></a>' +
+            '<a id="export-range-full" class="editor-button toggle" href="#" data-i18n="clipboard.export.all"></a>' +
+            '</span>' +
+            '</div>' +
+            '<div class="form-row">' +
+            '<textarea readonly style="resize: none; width: 100%; border-radius: 4px;font-family: monospace; font-size: 12px; background:#f3f3f3; padding-left: 0.5em; box-sizing:border-box;" id="clipboard-export" rows="5"></textarea>' +
+            '</div>' +
+            '<div class="form-row" style="text-align: right;">' +
+            '<span id="export-format-group" class="button-group">' +
+            '<a id="export-format-mini" class="editor-button editor-button-small toggle" href="#" data-i18n="clipboard.export.compact"></a>' +
+            '<a id="export-format-full" class="editor-button editor-button-small toggle" href="#" data-i18n="clipboard.export.formatted"></a>' +
+            '</span>' +
             '</div>';
 
-        importNodesDialog = '<div class="form-row">'+
-            '<textarea style="resize: none; width: 100%; border-radius: 0px;font-family: monospace; font-size: 12px; background:#eee; padding-left: 0.5em; box-sizing:border-box;" id="clipboard-import" rows="5" placeholder="'+
-            RED._("clipboard.pasteNodes")+
-            '"></textarea>'+
-            '</div>'+
-            '<div class="form-row">'+
-            '<label style="width:auto;margin-right: 10px;" data-i18n="clipboard.import.import"></label>'+
-            '<span id="import-tab" class="button-group">'+
-                '<a id="import-tab-current" class="editor-button toggle selected" href="#" data-i18n="clipboard.export.current"></a>'+
-                '<a id="import-tab-new" class="editor-button toggle" href="#" data-i18n="clipboard.import.newFlow"></a>'+
-            '</span>'+
+        importNodesDialog = '<div class="form-row">' +
+            '<textarea style="resize: none; width: 100%; border-radius: 0px;font-family: monospace; font-size: 12px; background:#eee; padding-left: 0.5em; box-sizing:border-box;" id="clipboard-import" rows="5" placeholder="' +
+            RED._("clipboard.pasteNodes") +
+            '"></textarea>' +
+            '</div>' +
+            '<div class="form-row">' +
+            '<label style="width:auto;margin-right: 10px;" data-i18n="clipboard.import.import"></label>' +
+            '<span id="import-tab" class="button-group">' +
+            '<a id="import-tab-current" class="editor-button toggle selected" href="#" data-i18n="clipboard.export.current"></a>' +
+            '<a id="import-tab-new" class="editor-button toggle" href="#" data-i18n="clipboard.import.newFlow"></a>' +
+            '</span>' +
             '</div>';
     }
 
     function validateImport() {
         var importInput = $("#clipboard-import");
         var v = importInput.val();
-        v = v.substring(v.indexOf('['),v.lastIndexOf(']')+1);
+        v = v.substring(v.indexOf('['), v.lastIndexOf(']') + 1);
         try {
             JSON.parse(v);
             importInput.removeClass("input-error");
             importInput.val(v);
             $("#clipboard-dialog-ok").button("enable");
-        } catch(err) {
+        } catch (err) {
             if (v !== "") {
                 importInput.addClass("input-error");
             }
@@ -142,9 +140,11 @@ RED.clipboard = (function() {
         $("#clipboard-dialog-copy").hide();
         $("#clipboard-dialog-ok").button("disable");
         $("#clipboard-import").keyup(validateImport);
-        $("#clipboard-import").on('paste',function() { setTimeout(validateImport,10)});
+        $("#clipboard-import").on('paste', function () {
+            setTimeout(validateImport, 10)
+        });
 
-        $("#import-tab > a").click(function(evt) {
+        $("#import-tab > a").click(function (evt) {
             evt.preventDefault();
             if ($(this).hasClass('disabled') || $(this).hasClass('selected')) {
                 return;
@@ -153,7 +153,7 @@ RED.clipboard = (function() {
             $(this).addClass('selected');
         });
 
-        dialog.dialog("option","title",RED._("clipboard.importNodes")).dialog("open");
+        dialog.dialog("option", "title", RED._("clipboard.importNodes")).dialog("open");
     }
 
     function exportNodes() {
@@ -166,7 +166,7 @@ RED.clipboard = (function() {
         dialogContainer.i18n();
         var format = RED.settings.flowFilePretty ? "export-format-full" : "export-format-mini";
 
-        $("#export-format-group > a").click(function(evt) {
+        $("#export-format-group > a").click(function (evt) {
             evt.preventDefault();
             if ($(this).hasClass('disabled') || $(this).hasClass('selected')) {
                 $("#clipboard-export").focus();
@@ -175,13 +175,23 @@ RED.clipboard = (function() {
             $(this).parent().children().removeClass('selected');
             $(this).addClass('selected');
 
-            var flow = $("#clipboard-export").val();
-            if (flow.length > 0) {
-                var nodes = JSON.parse(flow);
+            // var flow = $("#clipboard-export").val();
+            // 获取当前flow nodes
+            var flow = ""
+            var activeWorkspace = RED.workspaces.active();
+                nodes = RED.nodes.filterNodes({
+                    z: activeWorkspace
+                });
+                var parentNode = RED.nodes.workspace(activeWorkspace) || RED.nodes.subflow(activeWorkspace);
+                nodes.unshift(parentNode);
+                nodes = RED.nodes.createExportableNodeSet(nodes);
+                // end
+
+            if (nodes.length > 0) {
 
                 format = $(this).attr('id');
                 if (format === 'export-format-full') {
-                    flow = JSON.stringify(nodes,null,4);
+                    flow = flow = jsyaml.dump(formatJson(nodes));
                 } else {
                     flow = JSON.stringify(nodes);
                 }
@@ -190,7 +200,7 @@ RED.clipboard = (function() {
             }
         });
 
-        $("#export-range-group > a").click(function(evt) {
+        $("#export-range-group > a").click(function (evt) {
             evt.preventDefault();
             if ($(this).hasClass('disabled') || $(this).hasClass('selected')) {
                 $("#clipboard-export").focus();
@@ -204,11 +214,15 @@ RED.clipboard = (function() {
             if (type === 'export-range-selected') {
                 var selection = RED.view.selection();
                 // Don't include the subflow meta-port nodes in the exported selection
-                nodes = RED.nodes.createExportableNodeSet(selection.nodes.filter(function(n) { return n.type !== 'subflow'}));
+                nodes = RED.nodes.createExportableNodeSet(selection.nodes.filter(function (n) {
+                    return n.type !== 'subflow'
+                }));
             } else if (type === 'export-range-flow') {
                 var activeWorkspace = RED.workspaces.active();
-                nodes = RED.nodes.filterNodes({z:activeWorkspace});
-                var parentNode = RED.nodes.workspace(activeWorkspace)||RED.nodes.subflow(activeWorkspace);
+                nodes = RED.nodes.filterNodes({
+                    z: activeWorkspace
+                });
+                var parentNode = RED.nodes.workspace(activeWorkspace) || RED.nodes.subflow(activeWorkspace);
                 nodes.unshift(parentNode);
                 nodes = RED.nodes.createExportableNodeSet(nodes);
             } else if (type === 'export-range-full') {
@@ -216,7 +230,7 @@ RED.clipboard = (function() {
             }
             if (nodes !== null) {
                 if (format === "export-format-full") {
-                    flow = JSON.stringify(nodes,null,4);
+                    flow = jsyaml.dump(formatJson(nodes));
                 } else {
                     flow = JSON.stringify(nodes);
                 }
@@ -235,27 +249,33 @@ RED.clipboard = (function() {
         $("#clipboard-dialog-copy").hide();
         $("#clipboard-dialog-close").hide();
         var selection = RED.view.selection();
-        if (selection.nodes) {
-            $("#export-range-selected").click();
-        } else {
-            $("#export-range-selected").addClass('disabled').removeClass('selected');
-            $("#export-range-flow").click();
-        }
-        if (format === "export-format-full") {
+        // if (selection.nodes) {
+        //     $("#export-range-selected").click();
+        // } else {
+        //     $("#export-range-selected").addClass('disabled').removeClass('selected');
+        //     $("#export-range-flow").click();
+        // }
+        // 导出当前 flow
+        $("#export-range-flow").click();
+        $("#export-range-full").addClass('disabled').removeClass('selected');
+        $("#export-range-selected").addClass('disabled').removeClass('selected');
+
+
+        if (format !== "export-format-full") {
             $("#export-format-full").click();
         } else {
             $("#export-format-mini").click();
         }
         $("#clipboard-export")
-            .focus(function() {
+            .focus(function () {
                 var textarea = $(this);
                 textarea.select();
-                textarea.mouseup(function() {
+                textarea.mouseup(function () {
                     textarea.unbind("mouseup");
                     return false;
                 })
             });
-        dialog.dialog("option","title",RED._("clipboard.exportNodes")).dialog( "open" );
+        dialog.dialog("option", "title", RED._("clipboard.exportNodes")).dialog("open");
 
         $("#clipboard-export").focus();
         if (!document.queryCommandSupported("copy")) {
@@ -271,10 +291,11 @@ RED.clipboard = (function() {
         $("#dropTarget").hide();
         RED.keyboard.remove("escape");
     }
-    function copyText(value,element,msg) {
+
+    function copyText(value, element, msg) {
         var truncated = false;
-        if (typeof value !== "string" ) {
-            value = JSON.stringify(value, function(key,value) {
+        if (typeof value !== "string") {
+            value = JSON.stringify(value, function (key, value) {
                 if (value !== null && typeof value === 'object') {
                     if (value.__enc__) {
                         if (value.hasOwnProperty('data') && value.hasOwnProperty('length')) {
@@ -299,7 +320,7 @@ RED.clipboard = (function() {
             msg += "_truncated";
         }
         $("#clipboard-hidden").val(value).select();
-        var result =  document.execCommand("copy");
+        var result = document.execCommand("copy");
         if (result && element) {
             var popover = RED.popover.create({
                 target: element,
@@ -307,69 +328,150 @@ RED.clipboard = (function() {
                 size: 'small',
                 content: RED._(msg)
             });
-            setTimeout(function() {
+            setTimeout(function () {
                 popover.close();
-            },1000);
+            }, 1000);
             popover.open();
         }
         return result;
     }
+
+    function getRules(ruleNode, nodeList) {
+        let patterns = [],
+            nextName
+        ruleNode.rules.forEach(r => patterns.push(r))
+        const id = (ruleNode.wires[0] || [])[0]
+        if (id) {
+            for (let i = 0, l = nodeList.length; i < l; i++) {
+                const n = nodeList[i]
+                if (id === n.id && n.type !== 'rule') {
+                    nextName = n.name
+                    break;
+                }
+            }
+        }
+        return {
+            nextName,
+            patterns
+        }
+    }
+
+    function findNextNode(wires, nodeList) {
+        wires = wires[0] || []
+        const nextNodes = []
+        wires.forEach(id => {
+            for (let i = 0, l = nodeList.length; i < l; i++) {
+                const n = nodeList[i]
+                if (id === n.id) {
+                    return nextNodes.push(n)
+                }
+            }
+        })
+        return nextNodes
+    }
+
+    function formatJson(arr) {
+        const nodeList = []
+        const ret = {
+            domainName: "",
+            nodeList
+        }
+        arr.forEach(node => {
+            if (node.type === 'tab') {
+                ret.domainName = node.label
+            } else if (node.type !== 'rule') {
+                const next = {
+                    name: node.name,
+                    text: node.text,
+                    URL: node.URL,
+                    status: node.type,
+                }
+                if (node.type !== 'end') {
+                    next.nextNodes = []
+                    const nexts = findNextNode(node.wires, arr)
+                    nexts.forEach(n => {
+                        if (n.type === 'rule') {
+                            next.nextNodes.push(getRules(n, arr))
+                        }
+                    })
+                    // patterns: getRules(findNextNode(node.wires, arr)[0], arr)
+                }
+                nodeList.push(next)
+            }
+        })
+        return ret;
+    }
+
     return {
-        init: function() {
+        init: function () {
             setupDialogs();
 
             $('<input type="text" id="clipboard-hidden">').appendTo("body");
 
-            RED.actions.add("core:show-export-dialog",exportNodes);
-            RED.actions.add("core:show-import-dialog",importNodes);
+            RED.actions.add("core:show-export-dialog", exportNodes);
+            RED.actions.add("core:show-import-dialog", importNodes);
 
 
-            RED.events.on("editor:open",function() { disabled = true; });
-            RED.events.on("editor:close",function() { disabled = false; });
-            RED.events.on("search:open",function() { disabled = true; });
-            RED.events.on("search:close",function() { disabled = false; });
-            RED.events.on("type-search:open",function() { disabled = true; });
-            RED.events.on("type-search:close",function() { disabled = false; });
+            RED.events.on("editor:open", function () {
+                disabled = true;
+            });
+            RED.events.on("editor:close", function () {
+                disabled = false;
+            });
+            RED.events.on("search:open", function () {
+                disabled = true;
+            });
+            RED.events.on("search:close", function () {
+                disabled = false;
+            });
+            RED.events.on("type-search:open", function () {
+                disabled = true;
+            });
+            RED.events.on("type-search:close", function () {
+                disabled = false;
+            });
 
 
-            $('#chart').on("dragenter",function(event) {
-                if ($.inArray("text/plain",event.originalEvent.dataTransfer.types) != -1 ||
-                     $.inArray("Files",event.originalEvent.dataTransfer.types) != -1) {
-                    $("#dropTarget").css({display:'table'});
-                    RED.keyboard.add("*", "escape" ,hideDropTarget);
+            $('#chart').on("dragenter", function (event) {
+                if ($.inArray("text/plain", event.originalEvent.dataTransfer.types) != -1 ||
+                    $.inArray("Files", event.originalEvent.dataTransfer.types) != -1) {
+                    $("#dropTarget").css({
+                        display: 'table'
+                    });
+                    RED.keyboard.add("*", "escape", hideDropTarget);
                 }
             });
 
-            $('#dropTarget').on("dragover",function(event) {
-                if ($.inArray("text/plain",event.originalEvent.dataTransfer.types) != -1 ||
-                     $.inArray("Files",event.originalEvent.dataTransfer.types) != -1) {
-                    event.preventDefault();
-                }
-            })
-            .on("dragleave",function(event) {
-                hideDropTarget();
-            })
-            .on("drop",function(event) {
-                if ($.inArray("text/plain",event.originalEvent.dataTransfer.types) != -1) {
-                    var data = event.originalEvent.dataTransfer.getData("text/plain");
-                    data = data.substring(data.indexOf('['),data.lastIndexOf(']')+1);
-                    RED.view.importNodes(data);
-                } else if ($.inArray("Files",event.originalEvent.dataTransfer.types) != -1) {
-                    var files = event.originalEvent.dataTransfer.files;
-                    if (files.length === 1) {
-                        var file = files[0];
-                        var reader = new FileReader();
-                        reader.onload = (function(theFile) {
-                            return function(e) {
-                                RED.view.importNodes(e.target.result);
-                            };
-                        })(file);
-                        reader.readAsText(file);
+            $('#dropTarget').on("dragover", function (event) {
+                    if ($.inArray("text/plain", event.originalEvent.dataTransfer.types) != -1 ||
+                        $.inArray("Files", event.originalEvent.dataTransfer.types) != -1) {
+                        event.preventDefault();
                     }
-                }
-                hideDropTarget();
-                event.preventDefault();
-            });
+                })
+                .on("dragleave", function (event) {
+                    hideDropTarget();
+                })
+                .on("drop", function (event) {
+                    if ($.inArray("text/plain", event.originalEvent.dataTransfer.types) != -1) {
+                        var data = event.originalEvent.dataTransfer.getData("text/plain");
+                        data = data.substring(data.indexOf('['), data.lastIndexOf(']') + 1);
+                        RED.view.importNodes(data);
+                    } else if ($.inArray("Files", event.originalEvent.dataTransfer.types) != -1) {
+                        var files = event.originalEvent.dataTransfer.files;
+                        if (files.length === 1) {
+                            var file = files[0];
+                            var reader = new FileReader();
+                            reader.onload = (function (theFile) {
+                                return function (e) {
+                                    RED.view.importNodes(e.target.result);
+                                };
+                            })(file);
+                            reader.readAsText(file);
+                        }
+                    }
+                    hideDropTarget();
+                    event.preventDefault();
+                });
 
         },
         import: importNodes,

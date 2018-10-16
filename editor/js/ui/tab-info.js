@@ -33,7 +33,7 @@ RED.sidebar.info = (function() {
     var tipBox;
 
     var expandedSections = {
-        "property": false
+        "property": true
     };
 
     function init() {
@@ -167,14 +167,15 @@ RED.sidebar.info = (function() {
                 RED.utils.createObjectElement(node.id).appendTo(propRow.children()[1]);
                 propRow = $('<tr class="node-info-node-row"><td>'+RED._("sidebar.info.tabName")+"</td><td></td></tr>").appendTo(tableBody);
                 $(propRow.children()[1]).text(node.label||node.name||"");
-                if (node.type === "tab") {
-                    propRow = $('<tr class="node-info-node-row"><td>'+RED._("sidebar.info.status")+'</td><td></td></tr>').appendTo(tableBody);
-                    $(propRow.children()[1]).text((!!!node.disabled)?RED._("sidebar.info.enabled"):RED._("sidebar.info.disabled"))
-                } else if (node.type === "subflow") {
-                    propRow = $('<tr class="node-info-node-row"><td>'+RED._("subflow.category")+'</td><td></td></tr>').appendTo(tableBody);
-                    var category = node.category||"subflows";
-                    $(propRow.children()[1]).text(RED._("palette.label."+category,{defaultValue:category}))
-                }
+                //不显示 场景状态
+                // if (node.type === "tab") {
+                //     propRow = $('<tr class="node-info-node-row"><td>'+RED._("sidebar.info.status")+'</td><td></td></tr>').appendTo(tableBody);
+                //     $(propRow.children()[1]).text((!!!node.disabled)?RED._("sidebar.info.enabled"):RED._("sidebar.info.disabled"))
+                // } else if (node.type === "subflow") {
+                //     propRow = $('<tr class="node-info-node-row"><td>'+RED._("subflow.category")+'</td><td></td></tr>').appendTo(tableBody);
+                //     var category = node.category||"subflows";
+                //     $(propRow.children()[1]).text(RED._("palette.label."+category,{defaultValue:category}))
+                // }
             } else {
                 propRow = $('<tr class="node-info-node-row"><td>'+RED._("sidebar.info.node")+"</td><td></td></tr>").appendTo(tableBody);
                 RED.utils.createObjectElement(node.id).appendTo(propRow.children()[1]);

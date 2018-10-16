@@ -1,0 +1,113 @@
+<!-- start html file that corresponds to the 99-start.js file              -->
+<!-- This creates and configures the onscreen elements of the node           -->
+
+<!-- If you use this as a template, update the copyright with your own name. -->
+
+<!-- First, the content of the edit dialog is defined.                       -->
+
+<script type="text/x-red" data-template-name="rule">
+    <div class="form-row node-input-rule-container-row">
+        <ol id="node-input-rule-container"></ol>
+    </div>
+</script>
+
+
+<!-- Next, some simple help text is provided for the node.                   -->
+<script type="text/x-red" data-help-name="rule">
+    <p>规则节点</p>
+   <p>定义节点间的跳转规则</p>
+</script>
+
+<!-- Finally, the node type is registered along with all of its properties   -->
+<!-- The example below shows a small subset of the properties that can be set-->
+<script type="text/javascript">
+    RED.nodes.registerType('rule', {
+        category: 'node', // the palette category
+        color: "#f3b567", // set icon color
+        align:"right",
+        inputs:1,
+        outputs:1,
+        icon: "link-out.png",
+        defaults: {
+            rules: {value:[{oriPattern:"", sample:""}]},
+        },
+        inputLabels: function(i) {
+            return this.name||this._("link.linkOut");
+        },
+        label: function() {
+            return this.name||this._("link.linkOut");
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function() {
+            var node = this;
+            $("#node-input-rule-container").css('min-height','250px').css('min-width','450px').editableList({
+                addItem: function(container,i,opt) {
+                    if (!opt.hasOwnProperty('r')) {
+                        opt.r = {};
+                    }
+                    var rule = opt.r;
+                    if (!opt.hasOwnProperty('i')) {
+                        opt._i = Math.floor((0x99999-0x10000)*Math.random()).toString();
+                    }
+                    container.css({
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap'
+                    });
+                    var row = $('<div/>', {style: "padding-right:30px;"}).appendTo(container);
+                    var label1 = $("<label/>", {style:"display:block;width:100%"}).html("pattern").appendTo(row)
+                    var label2 = $("<label/>", {style:"display:block;width:100%"}).html("sample").appendTo(row)
+                    $('<input/>',{class:"node-input-rule-value pattern",type:"text",style:"margin-left:5px;width:80%"}).val(rule.oriPattern).appendTo(label1)
+                    $('<input/>',{class:"node-input-rule-value sample",type:"text",style:"margin-left:5px;width:80%"}).val(rule.sample).appendTo(label2)
+
+                    var finalspan = $('<span/>',{style:"position:absolute;top:50%;right:26px;margin-top: -9px;"}).appendTo(container);
+                    finalspan.append(' &#8594; <span class="node-input-rule-index">'+(i+1)+'</span> ');
+                },
+                removeItem: function(opt) {
+                    var rules = $("#node-input-rule-container").editableList('items');
+                    rules.each(function(i) {
+                        $(this).find(".node-input-rule-index").html(i+1);
+                    });
+                },
+                // resizeItem: resizeRule,
+                sortItems: function(rules) {
+                    var rules = $("#node-input-rule-container").editableList('items');
+                    rules.each(function(i) {
+                        $(this).find(".node-input-rule-index").html(i+1);
+                    });
+                },
+                sortable: true,
+                removable: true
+            });
+
+            for (var i=0;i<this.rules.length;i++) {
+                var rule = this.rules[i];
+                $("#node-input-rule-container").editableList('addItem',{r:rule,i:i});
+            }
+        },
+        oneditsave: function() {
+            var rules = $("#node-input-rule-container").editableList('items');
+            var ruleset;
+            var node = this;
+            node.rules = [];
+            rules.each(function(i) {
+                var rule = $(this);
+                var r = {oriPattern:"", sample:""};
+                r.oriPattern = rule.find(".node-input-rule-value.pattern").val();
+                r.sample = rule.find(".node-input-rule-value.sample").val();
+                node.rules.push(r);
+            });
+        },
+        oneditresize: function(size) {
+            var rows = $("#dialog-form>div:not(.node-input-rule-container-row)");
+            var height = size.height;
+            for (var i=0;i<rows.size();i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-input-rule-container-row");
+            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+            $("#node-input-rule-container").editableList('height',height);
+        }
+    });
+</script>

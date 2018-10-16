@@ -402,18 +402,18 @@
             //     {id:"menu-item-bidi-auto",toggle:"text-direction",label:RED._("menu.label.view.auto"), onselect:function(s) { if(s){RED.text.bidi.setTextDirection("auto")}}}
             // ]},
             // null,
-            {id:"menu-item-sidebar",label:RED._("menu.label.sidebar.show"),toggle:true,onselect:"core:toggle-sidebar", selected: true},
+            {id:"menu-item-sidebar",label:RED._("menu.label.sidebar.show"),toggle:true,onselect:"core:toggle-sidebar", selected: false},
             null
         ]});
         menuOptions.push(null);
-        menuOptions.push({id:"menu-item-import",label:RED._("menu.label.import"),options:[
+        menuOptions.push({id:"menu-item-import",label:RED._("menu.label.import"),onselect:"core:show-import-dialog"/* options:[
             {id:"menu-item-import-clipboard",label:RED._("menu.label.clipboard"),onselect:"core:show-import-dialog"},
-            {id:"menu-item-import-library",label:RED._("menu.label.library"),options:[]}
-        ]});
-        menuOptions.push({id:"menu-item-export",label:RED._("menu.label.export"),options:[
-            {id:"menu-item-export-clipboard",label:RED._("menu.label.clipboard"),onselect:"core:show-export-dialog"},
-            {id:"menu-item-export-library",label:RED._("menu.label.library"),disabled:true,onselect:"core:library-export"}
-        ]});
+            // {id:"menu-item-import-library",label:RED._("menu.label.library"),options:[]}
+        ] */});
+        menuOptions.push({id:"menu-item-export",label:RED._("menu.label.export"),onselect:"core:show-export-dialog"/* options:[
+            // {id:"menu-item-export-clipboard",label:RED._("menu.label.clipboard"),onselect:"core:show-export-dialog"},
+            // {id:"menu-item-export-library",label:RED._("menu.label.library"),disabled:true,onselect:"core:library-export"}
+        ] */});
         menuOptions.push(null);
         menuOptions.push({id:"menu-item-search",label:RED._("menu.label.search"),onselect:"core:search"});
         menuOptions.push(null);
@@ -423,25 +423,27 @@
             {id:"menu-item-workspace-edit",label:RED._("menu.label.rename"),onselect:"core:edit-flow"},
             {id:"menu-item-workspace-delete",label:RED._("menu.label.delete"),onselect:"core:remove-flow"}
         ]});
-        menuOptions.push({id:"menu-item-subflow",label:RED._("menu.label.subflows"), options: [
-            {id:"menu-item-subflow-create",label:RED._("menu.label.createSubflow"),onselect:"core:create-subflow"},
-            {id:"menu-item-subflow-convert",label:RED._("menu.label.selectionToSubflow"),disabled:true,onselect:"core:convert-to-subflow"},
-        ]});
-        menuOptions.push(null);
-        if (RED.settings.theme('palette.editable') !== false) {
-            menuOptions.push({id:"menu-item-edit-palette",label:RED._("menu.label.editPalette"),onselect:"core:manage-palette"});
-            menuOptions.push(null);
-        }
+        //子流程
+        // menuOptions.push({id:"menu-item-subflow",label:RED._("menu.label.subflows"), options: [
+        //     {id:"menu-item-subflow-create",label:RED._("menu.label.createSubflow"),onselect:"core:create-subflow"},
+        //     {id:"menu-item-subflow-convert",label:RED._("menu.label.selectionToSubflow"),disabled:true,onselect:"core:convert-to-subflow"},
+        // ]});
+        // 节点管理
+        // menuOptions.push(null);
+        // if (RED.settings.theme('palette.editable') !== false) {
+        //     menuOptions.push({id:"menu-item-edit-palette",label:RED._("menu.label.editPalette"),onselect:"core:manage-palette"});
+        //     menuOptions.push(null);
+        // }
 
-        menuOptions.push({id:"menu-item-user-settings",label:RED._("menu.label.settings"),onselect:"core:show-user-settings"});
+        // menuOptions.push({id:"menu-item-user-settings",label:RED._("menu.label.settings"),onselect:"core:show-user-settings"});
         menuOptions.push(null);
 
         menuOptions.push({id:"menu-item-keyboard-shortcuts",label:RED._("menu.label.keyboardShortcuts"),onselect:"core:show-help"});
-        menuOptions.push({id:"menu-item-help",
-            label: RED.settings.theme("menu.menu-item-help.label",RED._("menu.label.help")),
-            href: RED.settings.theme("menu.menu-item-help.url","http://nodered.org/docs")
-        });
-        menuOptions.push({id:"menu-item-node-red-version", label:"v"+RED.settings.version, onselect: "core:show-about" });
+        // menuOptions.push({id:"menu-item-help",
+        //     label: RED.settings.theme("menu.menu-item-help.label",RED._("menu.label.help")),
+        //     href: RED.settings.theme("menu.menu-item-help.url","http://nodered.org/docs")
+        // });
+        // menuOptions.push({id:"menu-item-node-red-version", label:"v"+RED.settings.version, onselect: "core:show-about" });
 
 
         RED.view.init();

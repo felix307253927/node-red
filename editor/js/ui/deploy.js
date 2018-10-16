@@ -89,7 +89,6 @@ RED.deploy = (function() {
               '</a>'+
               '</span></li>').prependTo(".header-toolbar");
         }
-
         $('#btn-deploy').click(function(event) {
             event.preventDefault();
             save();
@@ -451,4 +450,9 @@ RED.deploy = (function() {
         }
 
     }
+    // function loop(){}
+    // return {
+    //     init: loop,
+    //     setDeployInflight: loop
+    // }
 })();

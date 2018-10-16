@@ -422,6 +422,8 @@ RED.palette.editor = (function() {
 
 
     function init() {
+        // 禁止 palette 设置
+        return;
         if (RED.settings.theme('palette.editable') === false) {
             return;
         }

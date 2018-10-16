@@ -1996,11 +1996,11 @@ RED.view = (function() {
             var nodeEnter = node.enter().insert("svg:g")
                 .attr("class", "node nodegroup")
                 .classed("node_subflow",function(d) { return activeSubflow != null; })
-                .classed("node_link",function(d) { return d.type === "link in" || d.type === "link out" });
+                .classed("node_link",function(d) { return d.type === "link in" || d.type === "link out" || d.type==='rule'});
 
             nodeEnter.each(function(d,i) {
                     var node = d3.select(this);
-                    var isLink = d.type === "link in" || d.type === "link out";
+                    var isLink = d.type === "link in" || d.type === "link out" || d.type==='rule';
                     node.attr("id",d.id);
                     var l = RED.utils.getNodeLabel(d);
                     if (isLink) {
@@ -2188,7 +2188,7 @@ RED.view = (function() {
 
             node.each(function(d,i) {
                     if (d.dirty) {
-                        var isLink = d.type === "link in" || d.type === "link out";
+                        var isLink = d.type === "link in" || d.type === "link out" || d.type==='rule';
                         dirtyNodes[d.id] = d;
                         //if (d.x < -50) deleteSelection();  // Delete nodes if dragged back to palette
                         if (!isLink && d.resize) {
