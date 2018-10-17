@@ -17,10 +17,10 @@
     <p>规则节点
         <div style="color:#1fb01f">绿色：正常</div>
         <div style="color:#c8c812">黄色：缺少示例</div>
-        <div style="color:#fa889c">粉色缺少描述</div>
-        <div style="color:red">红色:缺少正则</div>
+        <div style="color:#f46ee1">粉色：缺少描述</div>
+        <div style="color:red">红色：缺少正则</div>
     </p>
-    <p>定义节点间的跳转规则</p>
+    <p>定义节点间的跳转规则<br>rule节点只能连接非rule，rule节点之间不可以连接</p>
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
@@ -33,15 +33,15 @@
            if(!r.oriPattern) {
                // status = {fill: "red", text:"缺少正则"}
                // break;
-               return "red"
+               return "#ff5f5f"
            } else if (!r.sample){
                // status = {fill: "yellow", text:"缺少示例"}
                // break;
-               return "#c8c812"
+               return "#ffd85f"
            } else if(!r.text){
                // status = {fill: "pink", text:"缺少规则描述"}
                // break;
-               return "#fa889c"
+               return "#f46ee1"
            }
        }
        // this.status = status
@@ -51,7 +51,7 @@
     }
     RED.nodes.registerType('rule', {
         category: 'node', // the palette category
-        color: "#1fb01f", // set icon color
+        color: "#7dee7d", // set icon color
         align:"right",
         inputs:1,
         outputs:1,
@@ -60,10 +60,13 @@
             rules: {value:[{oriPattern:"", sample:"", text:""}]},
         },
         inputLabels: function(i) {
-            return this.name||this._("link.linkOut");
+            return "节点入口";
+        },
+        outputLabels: function(){
+            return "节点出口";
         },
         label: function() {
-            return this.name||this._("link.linkOut");
+            return this.name;
         },
         labelStyle: function() {
             return this.name?"node_label_italic":"";

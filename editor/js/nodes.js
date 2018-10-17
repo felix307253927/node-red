@@ -223,7 +223,12 @@ RED.nodes = (function() {
         RED.events.emit('nodes:add',n);
     }
     function addLink(l) {
-        links.push(l);
+        var tt = l.target.type, st = l.source.type;
+        if(tt !== st && (l.target.type === 'rule' || l.source.type  === 'rule')){
+            links.push(l);
+        } else {
+            console.log("不符合规则:", st,"->",tt);
+        }
     }
 
     function getNode(id) {

@@ -24,7 +24,7 @@
 <!-- Next, some simple help text is provided for the node.                   -->
 <script type="text/x-red" data-help-name="end">
     <p>结束节点</p>
-    <p>这是对话结束的节点</p>
+    <p>这是对话结束的节点<br>只能和rule节点相连</p>
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
@@ -45,9 +45,8 @@
         },
         inputs: 1, // set the number of inputs - only 0 or 1
         outputs: 0, // set the number of outputs - 0 to n
-        icon: "debug.png",
         align: "right",
-        color: "#c7e9c0", // set icon color
+        color: "#ffb3b3", // set icon color
         // set the icon (held in icons dir below where you save the node)
         icon: "join.png", // saved in  icons/myicon.png
         label: function () { // sets the default label contents
@@ -55,6 +54,9 @@
         },
         labelStyle: function () { // sets the class to apply to the label
             return this.name ? "node_label_italic" : "";
-        }
+        },
+        inputLabels: function(i) {
+            return "规则入口";
+        },
     });
 </script>

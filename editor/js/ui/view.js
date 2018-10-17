@@ -744,6 +744,9 @@ RED.view = (function() {
     }
 
     function canvasMouseMove() {
+        if (mouse_mode != RED.state.QUICK_JOINING && mouse_mode != RED.state.IMPORT_DRAGGING && !mousedown_node && selected_link == null) {
+            return;
+        }
         var i;
         var node;
         // Prevent touch scrolling...
@@ -771,7 +774,6 @@ RED.view = (function() {
 
         mouse_position = d3.touches(this)[0]||d3.mouse(this);
 
-
         if (lasso) {
             var ox = parseInt(lasso.attr("ox"));
             var oy = parseInt(lasso.attr("oy"));
@@ -797,10 +799,6 @@ RED.view = (function() {
                 .attr("width",w)
                 .attr("height",h)
             ;
-            return;
-        }
-
-        if (mouse_mode != RED.state.QUICK_JOINING && mouse_mode != RED.state.IMPORT_DRAGGING && !mousedown_node && selected_link == null) {
             return;
         }
 
