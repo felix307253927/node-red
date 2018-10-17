@@ -121,7 +121,7 @@
             "name": "名称",
             "filterAll": "所有节点",
             "filterSelected": "已选节点",
-            "filterCurrent": "当前流程",
+            "filterCurrent": "当前场景",
             "debugNodes": "调试节点",
             "clearLog": "清空日志",
             "openWindow": "在新窗口打开"
@@ -139,8 +139,8 @@
         "label": {
             "event": "事件名称",
             "node": "节点名称",
-            "type": "流程",
-            "sortByFlow":"根据流程排序",
+            "type": "场景",
+            "sortByFlow":"根据场景排序",
             "sortByLabel": "根据名称排序"
         }
     },
@@ -308,7 +308,7 @@
         "label": {
             "unknown": "未知"
         },
-        "tip": "<p>此节点是您安装，但Node-RED所不知道的类型。</p><p><i>如果在此状态下保存节点，那么它的配置将被保留，但是流程将不会启动，直到安装缺少的类型。</i></p><p>有关更多帮助，请参阅信息侧栏</p>"
+        "tip": "<p>此节点是您安装，但Node-RED所不知道的类型。</p><p><i>如果在此状态下保存节点，那么它的配置将被保留，但是场景将不会启动，直到安装缺少的类型。</i></p><p>有关更多帮助，请参阅信息侧栏</p>"
     },
     "mqtt": {
         "label": {

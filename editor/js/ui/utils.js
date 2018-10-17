@@ -797,6 +797,12 @@ RED.utils = (function() {
     var nodeColorCache = {};
     function getNodeColor(type, def) {
         var result = def.color;
+        if(result){
+            return result
+        } else if(def._def){
+            return result = def._def.color
+        }
+        
         var paletteTheme = RED.settings.theme('palette.theme') || [];
         if (paletteTheme.length > 0) {
             if (!nodeColorCache.hasOwnProperty(type)) {

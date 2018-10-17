@@ -2000,7 +2000,8 @@ RED.view = (function() {
 
             nodeEnter.each(function(d,i) {
                     var node = d3.select(this);
-                    var isLink = d.type === "link in" || d.type === "link out" || d.type==='rule';
+                    var isRule = d.type==='rule'
+                    var isLink = d.type === "link in" || d.type === "link out" || isRule;
                     node.attr("id",d.id);
                     var l = RED.utils.getNodeLabel(d);
                     if (isLink) {
@@ -2059,7 +2060,7 @@ RED.view = (function() {
                         .classed("node_unknown",function(d) { return d.type == "unknown"; })
                         .attr("rx", 5)
                         .attr("ry", 5)
-                        .attr("fill",function(d) { return RED.utils.getNodeColor(d.type,d._def); /*d._def.color;*/})
+                        .attr("fill",function(d) { return RED.utils.getNodeColor(d.type, d); /*d._def.color;*/})
                         .on("mouseup",nodeMouseUp)
                         .on("mousedown",nodeMouseDown)
                         .on("touchstart",function(d) {
@@ -2158,12 +2159,14 @@ RED.view = (function() {
                         //icon.style("pointer-events","none");
                         icon_group.style("pointer-events","none");
                     }
-                    if (!isLink) {
-                        var text = node.append("svg:text").attr("class","node_label").attr("x", 38).attr("dy", ".35em").attr("text-anchor","start");
-                        if (d._def.align) {
-                            text.attr("class","node_label node_label_"+d._def.align);
-                            if (d._def.align === "right") {
-                                text.attr("text-anchor","end");
+                    if (!isLink || isRule) {
+                        if(!isRule){
+                            var text = node.append("svg:text").attr("class","node_label").attr("x", 38).attr("dy", ".35em").attr("text-anchor","start");
+                            if (d._def.align) {
+                                text.attr("class","node_label node_label_"+d._def.align);
+                                if (d._def.align === "right") {
+                                    text.attr("text-anchor","end");
+                                }
                             }
                         }
 
@@ -2686,6 +2689,7 @@ RED.view = (function() {
                         node.dy -= minY;
                         if (node.n._def.onadd) {
                             try {
+                                console.log('node add');
                                 node.n._def.onadd.call(node.n);
                             } catch(err) {
                                 console.log("Definition error: "+node.n.type+".onadd:",err);

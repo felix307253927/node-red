@@ -14,22 +14,50 @@
 
 <!-- Next, some simple help text is provided for the node.                   -->
 <script type="text/x-red" data-help-name="rule">
-    <p>规则节点</p>
-   <p>定义节点间的跳转规则</p>
+    <p>规则节点
+        <div style="color:#1fb01f">绿色：正常</div>
+        <div style="color:#c8c812">黄色：缺少示例</div>
+        <div style="color:#fa889c">粉色缺少描述</div>
+        <div style="color:red">红色:缺少正则</div>
+    </p>
+    <p>定义节点间的跳转规则</p>
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
 <!-- The example below shows a small subset of the properties that can be set-->
 <script type="text/javascript">
+    function  checkStatus(node){
+       // var status;
+       for(var i=0,l=node.rules.length;i<l;i++){
+           var r = node.rules[i]
+           if(!r.oriPattern) {
+               // status = {fill: "red", text:"缺少正则"}
+               // break;
+               return "red"
+           } else if (!r.sample){
+               // status = {fill: "yellow", text:"缺少示例"}
+               // break;
+               return "#c8c812"
+           } else if(!r.text){
+               // status = {fill: "pink", text:"缺少规则描述"}
+               // break;
+               return "#fa889c"
+           }
+       }
+       // this.status = status
+       // RED.view.redraw()
+       // return status
+       return node._def.color;
+    }
     RED.nodes.registerType('rule', {
         category: 'node', // the palette category
-        color: "#f3b567", // set icon color
+        color: "#1fb01f", // set icon color
         align:"right",
         inputs:1,
         outputs:1,
         icon: "link-out.png",
         defaults: {
-            rules: {value:[{oriPattern:"", sample:""}]},
+            rules: {value:[{oriPattern:"", sample:"", text:""}]},
         },
         inputLabels: function(i) {
             return this.name||this._("link.linkOut");
@@ -56,10 +84,12 @@
                         whiteSpace: 'nowrap'
                     });
                     var row = $('<div/>', {style: "padding-right:30px;"}).appendTo(container);
-                    var label1 = $("<label/>", {style:"display:block;width:100%"}).html("pattern").appendTo(row)
-                    var label2 = $("<label/>", {style:"display:block;width:100%"}).html("sample").appendTo(row)
-                    $('<input/>',{class:"node-input-rule-value pattern",type:"text",style:"margin-left:5px;width:80%"}).val(rule.oriPattern).appendTo(label1)
+                    var label2 = $("<label/>", {style:"display:block;width:100%"}).html("示例").appendTo(row)
+                    var label3 = $("<label/>", {style:"display:block;width:100%"}).html("描述").appendTo(row)
+                    var label1 = $("<label/>", {style:"display:block;width:100%"}).html("正则").appendTo(row)
                     $('<input/>',{class:"node-input-rule-value sample",type:"text",style:"margin-left:5px;width:80%"}).val(rule.sample).appendTo(label2)
+                    $('<textarea/>',{class:"node-input-rule-value text",style:"margin-left:5px;width:80%"}).val(rule.text).appendTo(label3)
+                    $('<textarea/>',{class:"node-input-rule-value pattern",style:"margin-left:5px;width:80%"}).val(rule.oriPattern).appendTo(label1)
 
                     var finalspan = $('<span/>',{style:"position:absolute;top:50%;right:26px;margin-top: -9px;"}).appendTo(container);
                     finalspan.append(' &#8594; <span class="node-input-rule-index">'+(i+1)+'</span> ');
@@ -91,13 +121,17 @@
             var ruleset;
             var node = this;
             node.rules = [];
+            
             rules.each(function(i) {
                 var rule = $(this);
                 var r = {oriPattern:"", sample:""};
                 r.oriPattern = rule.find(".node-input-rule-value.pattern").val();
                 r.sample = rule.find(".node-input-rule-value.sample").val();
+                r.text = rule.find(".node-input-rule-value.text").val();
                 node.rules.push(r);
             });
+            // this.checkStatus.call(this)
+            RED.nodes.updateColor(this, checkStatus(this))
         },
         oneditresize: function(size) {
             var rows = $("#dialog-form>div:not(.node-input-rule-container-row)");
@@ -108,6 +142,15 @@
             var editorRow = $("#dialog-form>div.node-input-rule-container-row");
             height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
             $("#node-input-rule-container").editableList('height',height);
+        },
+        onnodeadd: function(){
+            // this.checkStatus.call(this)
+            // if(this.status){
+            //     RED.nodes.updateColor(this, this.status.fill)
+            // }
+            RED.nodes.updateColor(this, checkStatus(this))
+        },
+        onadd: function(){
         }
     });
 </script>

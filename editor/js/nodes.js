@@ -213,6 +213,13 @@ RED.nodes = (function() {
             }
             nodes.push(n);
         }
+        if(n._def.onnodeadd){
+            try {
+                n._def.onnodeadd.call(n)
+            } catch (error) {
+                console.log("node add Error:", error)   
+            }
+        }
         RED.events.emit('nodes:add',n);
     }
     function addLink(l) {
@@ -1416,6 +1423,24 @@ RED.nodes = (function() {
                 return dirty;
             } else {
                 setDirty(d);
+            }
+        },
+        updateColor(node, color){
+            node.color = color
+            var react;
+            if( node._ports &&  node._ports[0]){
+                var g = node._ports[0]["parentNode"]
+                if(g.id === node.id){
+                    react = d3.select(g)
+                }
+            }
+            if(!react){
+                react = d3.select("[id='"+ node.id + "']")
+            }
+            if(react && !react.empty()){
+                react.select("rect.node").attr("fill", color)
+            } else {
+                RED.view.redraw()
             }
         }
     };
