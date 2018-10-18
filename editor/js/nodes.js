@@ -316,8 +316,23 @@ RED.nodes = (function() {
         if (index != -1) {
             links.splice(index,1);
             var nodes = d3.selectAll(".node.nodegroup")
-            nodes.select("[id='"+l.source.id+"'] .port_output .port").classed("port_unuse", true)
-            nodes.select("[id='"+l.target.id+"'] .port_input .port").classed("port_unuse", true)
+            var sp = true, tp = true;
+            if(l.source.type === "rule"){
+                sp = true
+            } else {
+                sp = !RED.nodes.links.some(function(ln){
+                    return l.source.id === ln.source.id
+                })
+            }
+            if(l.target.type === "rule"){
+                tp = true
+            } else {
+                tp = !RED.nodes.links.some(function(ln){
+                    return l.target.id === ln.target.id
+                })
+            }
+            nodes.select("[id='"+l.source.id+"'] .port_output .port").classed("port_unuse", sp)
+            nodes.select("[id='"+l.target.id+"'] .port_input .port").classed("port_unuse", tp)
         }
     }
 
