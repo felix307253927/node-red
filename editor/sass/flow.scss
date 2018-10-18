@@ -184,6 +184,11 @@
     text-anchor:start;
 }
 
+.port_unuse{
+    stroke:red;
+    fill:red;
+}
+
 .port_hovered {
     stroke: $port-selected-color;
     fill:  $port-selected-color;

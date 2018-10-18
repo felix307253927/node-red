@@ -224,11 +224,20 @@ RED.nodes = (function() {
     }
     function addLink(l) {
         var tt = l.target.type, st = l.source.type;
-        if(tt !== st && (l.target.type === 'rule' || l.source.type  === 'rule')){
+        if(tt !== st && (tt === 'rule' || st  === 'rule')){
+            for(var i=0,len=links.length;i<len;i++){
+                var ln = links[i]
+                if(st === 'rule' && l.source.id === ln.source.id){
+                    return
+                } else if (tt === "rule" && l.target.id === ln.target.id){
+                    return
+                }
+            }
+            var nodes = d3.selectAll(".node.nodegroup")
+            nodes.select("[id='"+l.source.id+"'] .port_output .port").classed("port_unuse", false)
+            nodes.select("[id='"+l.target.id+"'] .port_input .port").classed("port_unuse", false)
             links.push(l);
-        } else {
-            console.log("不符合规则:", st,"->",tt);
-        }
+        } 
     }
 
     function getNode(id) {
@@ -306,6 +315,9 @@ RED.nodes = (function() {
         var index = links.indexOf(l);
         if (index != -1) {
             links.splice(index,1);
+            var nodes = d3.selectAll(".node.nodegroup")
+            nodes.select("[id='"+l.source.id+"'] .port_output .port").classed("port_unuse", true)
+            nodes.select("[id='"+l.target.id+"'] .port_input .port").classed("port_unuse", true)
         }
     }
 
@@ -1415,6 +1427,12 @@ RED.nodes = (function() {
 
         filterNodes: filterNodes,
         filterLinks: filterLinks,
+        /**
+         * 获取links
+         * @param {String} id nodeID
+         * @param {String} type  link类型 可选值[source, target]
+         */
+        links: links,
 
         import: importNodes,
 
@@ -1440,7 +1458,7 @@ RED.nodes = (function() {
                 }
             }
             if(!react){
-                react = d3.select("[id='"+ node.id + "']")
+                react = d3.select(".node.nodegroup[id='"+ node.id + "']")
             }
             if(react && !react.empty()){
                 react.select("rect.node").attr("fill", color)
