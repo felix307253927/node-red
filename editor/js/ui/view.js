@@ -52,6 +52,7 @@ RED.view = (function() {
         mouse_offset = [0,0],
         mouse_position = null,
         mouse_mode = 0,
+        mouseover_port = false,
         moving_set = [],
         lasso = null,
         showStatus = false,
@@ -615,6 +616,60 @@ RED.view = (function() {
 
     }
 
+    function quickAddNode(point, type) {
+        quickAddActive = false;
+        var result = addNode(type);
+        if (!result) {
+            return;
+        }
+        var nn = result.node;
+        var historyEvent = result.historyEvent;
+        nn.x = point[0];
+        nn.y = point[1];
+        if (quickAddLink || drag_lines.length > 0) {
+            var drag_line = quickAddLink||drag_lines[0];
+            var src = null,dst,src_port;
+            if (drag_line.portType === PORT_TYPE_OUTPUT && nn.inputs > 0) {
+                src = drag_line.node;
+                src_port = drag_line.port;
+                dst = nn;
+            } else if (drag_line.portType === PORT_TYPE_INPUT && nn.outputs > 0) {
+                src = nn;
+                dst = drag_line.node;
+                src_port = 0;
+            }
+            if (src !== null) {
+                var link = {source: src, sourcePort:src_port, target: dst};
+                RED.nodes.addLink(link);
+                historyEvent.links = [link];
+                hideDragLines();
+                if (!quickAddLink && drag_line.portType === PORT_TYPE_OUTPUT && nn.outputs > 0) {
+                    showDragLines([{node:nn,port:0,portType:PORT_TYPE_OUTPUT}]);
+                } else if (!quickAddLink && drag_line.portType === PORT_TYPE_INPUT && nn.inputs > 0) {
+                    showDragLines([{node:nn,port:0,portType:PORT_TYPE_INPUT}]);
+                } else {
+                    resetMouseVars();
+                }
+            } else {
+                hideDragLines();
+                resetMouseVars();
+            }
+            quickAddLink = null;
+        }
+
+        RED.history.push(historyEvent);
+        RED.nodes.add(nn);
+        RED.editor.validateNode(nn);
+        RED.nodes.dirty(true);
+        // auto select dropped node - so info shows (if visible)
+        clearSelection();
+        nn.selected = true;
+        moving_set.push({n:nn});
+        updateActiveNodes();
+        updateSelection();
+        redraw();
+    }
+
     function canvasMouseDown() {
         var point;
 
@@ -648,77 +703,51 @@ RED.view = (function() {
                     $(window).on('keyup',disableQuickJoinEventHandler);
                 }
                 quickAddActive = true;
-                RED.typeSearch.show({
+
+                // 快速添加节点
+                if(mouse_mode === RED.state.QUICK_JOINING){
+                    var drag_line = quickAddLink||drag_lines[0];
+                    if(drag_line && drag_line.node){
+                        var src = drag_line.node
+                        if(src.type !== 'rule'){
+                            quickAddNode.call(this, point, 'rule')
+                        } else {
+                            RED.typeSearch.show({
+                                type: mousedown_node.type,
+                                putType: mousedown_port_type,
+                                x:d3.event.clientX-mainPos.left-node_width/2,
+                                y:d3.event.clientY-mainPos.top-node_height/2,
+                                cancel: function() {
+                                    quickAddActive = false;
+                                    resetMouseVars();
+                                },
+                                add: quickAddNode.bind(this, point)
+                            })
+                        }
+                    } else {
+                        RED.typeSearch.show({
+                            type: mousedown_node.type,
+                            putType: mousedown_port_type,
+                            x:d3.event.clientX-mainPos.left-node_width/2,
+                            y:d3.event.clientY-mainPos.top-node_height/2,
+                            cancel: function() {
+                                quickAddActive = false;
+                                resetMouseVars();
+                            },
+                            add: quickAddNode.bind(this, point)
+                        })
+                    }
+                }
+
+                /* RED.typeSearch.show({
                     x:d3.event.clientX-mainPos.left-node_width/2,
                     y:d3.event.clientY-mainPos.top-node_height/2,
                     cancel: function() {
                         quickAddActive = false;
                         resetMouseVars();
                     },
-                    add: function(type) {
-                        quickAddActive = false;
-                        var result = addNode(type);
-                        if (!result) {
-                            return;
-                        }
-                        var nn = result.node;
-                        var historyEvent = result.historyEvent;
-                        nn.x = point[0];
-                        nn.y = point[1];
-                        if (mouse_mode === RED.state.QUICK_JOINING || quickAddLink) {
-                            if (quickAddLink || drag_lines.length > 0) {
-                                var drag_line = quickAddLink||drag_lines[0];
-                                var src = null,dst,src_port;
-                                if (drag_line.portType === PORT_TYPE_OUTPUT && nn.inputs > 0) {
-                                    src = drag_line.node;
-                                    src_port = drag_line.port;
-                                    dst = nn;
-                                } else if (drag_line.portType === PORT_TYPE_INPUT && nn.outputs > 0) {
-                                    src = nn;
-                                    dst = drag_line.node;
-                                    src_port = 0;
-                                }
-                                if (src !== null) {
-                                    var link = {source: src, sourcePort:src_port, target: dst};
-                                    RED.nodes.addLink(link);
-                                    historyEvent.links = [link];
-                                    hideDragLines();
-                                    if (!quickAddLink && drag_line.portType === PORT_TYPE_OUTPUT && nn.outputs > 0) {
-                                        showDragLines([{node:nn,port:0,portType:PORT_TYPE_OUTPUT}]);
-                                    } else if (!quickAddLink && drag_line.portType === PORT_TYPE_INPUT && nn.inputs > 0) {
-                                        showDragLines([{node:nn,port:0,portType:PORT_TYPE_INPUT}]);
-                                    } else {
-                                        resetMouseVars();
-                                    }
-                                } else {
-                                    hideDragLines();
-                                    resetMouseVars();
-                                }
-                            } else {
-                                if (nn.outputs > 0) {
-                                    showDragLines([{node:nn,port:0,portType:PORT_TYPE_OUTPUT}]);
-                                } else if (nn.inputs > 0) {
-                                    showDragLines([{node:nn,port:0,portType:PORT_TYPE_INPUT}]);
-                                } else {
-                                    resetMouseVars();
-                                }
-                            }
-                            quickAddLink = null;
-                        }
-
-                        RED.history.push(historyEvent);
-                        RED.nodes.add(nn);
-                        RED.editor.validateNode(nn);
-                        RED.nodes.dirty(true);
-                        // auto select dropped node - so info shows (if visible)
-                        clearSelection();
-                        nn.selected = true;
-                        moving_set.push({n:nn});
-                        updateActiveNodes();
-                        updateSelection();
-                        redraw();
-                    }
-                });
+                    add: 
+                }); */
 
                 updateActiveNodes();
                 updateSelection();
@@ -744,9 +773,7 @@ RED.view = (function() {
     }
 
     function canvasMouseMove() {
-        if (mouse_mode != RED.state.QUICK_JOINING && mouse_mode != RED.state.IMPORT_DRAGGING && !mousedown_node && selected_link == null) {
-            return;
-        }
+        
         var i;
         var node;
         // Prevent touch scrolling...
@@ -801,7 +828,11 @@ RED.view = (function() {
             ;
             return;
         }
-
+        
+        if (mouse_mode != RED.state.QUICK_JOINING && mouse_mode != RED.state.IMPORT_DRAGGING && !mousedown_node && selected_link == null) {
+            return;
+        }
+        
         var mousePos;
         if (mouse_mode == RED.state.JOINING || mouse_mode === RED.state.QUICK_JOINING) {
             // update drag line
@@ -1008,19 +1039,44 @@ RED.view = (function() {
             return;
         }
         if (mousedown_node && mouse_mode == RED.state.JOINING) {
-            var removedLinks = [];
-            for (i=0;i<drag_lines.length;i++) {
-                if (drag_lines[i].link) {
-                    removedLinks.push(drag_lines[i].link)
+            if(!mouseover_port){
+                d3.event.stopPropagation();
+                var point  = d3.mouse(this)
+                var mainPos = $("#main-container").position();
+                if(mousedown_node.type !== 'rule'){
+                    quickAddNode.call(this, point, 'rule')
+                } else {
+                    RED.typeSearch.show({
+                        type: mousedown_node.type,
+                        putType: mousedown_port_type,
+                        x:d3.event.clientX-mainPos.left-node_width/2,
+                        y:d3.event.clientY-mainPos.top-node_height/2,
+                        cancel: function() {
+                            quickAddActive = false;
+                            resetMouseVars();
+                            hideDragLines();
+                        },
+                        add: function(type){
+                            quickAddNode.call(this, point, type)
+                            hideDragLines();
+                        }
+                    })
                 }
+            } else {
+                var removedLinks = [];
+                for (i=0;i<drag_lines.length;i++) {
+                    if (drag_lines[i].link) {
+                        removedLinks.push(drag_lines[i].link)
+                    }
+                }
+                historyEvent = {
+                    t:"delete",
+                    links: removedLinks,
+                    dirty:RED.nodes.dirty()
+                };
+                RED.history.push(historyEvent);
+                hideDragLines();
             }
-            historyEvent = {
-                t:"delete",
-                links: removedLinks,
-                dirty:RED.nodes.dirty()
-            };
-            RED.history.push(historyEvent);
-            hideDragLines();
         }
         if (lasso) {
             var x = parseInt(lasso.attr("x"));
@@ -1438,6 +1494,8 @@ RED.view = (function() {
     }
 
     function calculateTextDimensions(str,className,offsetW,offsetH) {
+        return [80, 20]
+        /* console.log(str,className,offsetW,offsetH);
         var sp = document.createElement("span");
         sp.className = className;
         sp.style.position = "absolute";
@@ -1447,7 +1505,7 @@ RED.view = (function() {
         var w = sp.offsetWidth;
         var h = sp.offsetHeight;
         document.body.removeChild(sp);
-        return [offsetW+w,offsetH+h];
+        return [offsetW+w,offsetH+h]; */
     }
 
     function resetMouseVars() {
@@ -1656,6 +1714,7 @@ RED.view = (function() {
         return result;
     }
     function portMouseOver(port,d,portType,portIndex) {
+        mouseover_port = true
         clearTimeout(portLabelHoverTimeout);
         var active = (mouse_mode!=RED.state.JOINING || (drag_lines.length > 0 && drag_lines[0].portType !== portType));
         if (active && ((portType === PORT_TYPE_INPUT && ((d._def && d._def.inputLabels)||d.inputLabels)) || (portType === PORT_TYPE_OUTPUT && ((d._def && d._def.outputLabels)||d.outputLabels)))) {
@@ -1709,6 +1768,7 @@ RED.view = (function() {
         port.classed("port_hovered",active);
     }
     function portMouseOut(port,d,portType,portIndex) {
+        mouseover_port = false
         clearTimeout(portLabelHoverTimeout);
         if (portLabelHover) {
             portLabelHover.remove();
@@ -2303,7 +2363,7 @@ RED.view = (function() {
                                             l = d.type;
                                         }
                                     }
-                                    return l;
+                                    return l.substr(0, 5);
                                 })
                                 .attr("y", function(d){return (d.h/2)-1;})
                                 .attr("class",function(d){

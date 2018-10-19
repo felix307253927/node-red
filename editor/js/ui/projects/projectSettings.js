@@ -392,7 +392,6 @@ RED.projects.settings = (function() {
         depsList.editableList({
             addButton: false,
             addItem: function(row,index,entry) {
-                // console.log(entry);
                 var headerRow = $('<div>',{class:"palette-module-header"}).appendTo(row);
                 if (entry.label) {
                     if (entry.index === 0) {

@@ -4,6 +4,7 @@ RED.typeSearch = (function() {
 
     var disabled = false;
     var dialog = null;
+    var searchDiv;
     var searchInput;
     var searchResults;
     var searchResultsDiv;
@@ -47,7 +48,7 @@ RED.typeSearch = (function() {
     function createDialog() {
         //shade = $('<div>',{class:"red-ui-type-search-shade"}).appendTo("#main-container");
         dialog = $("<div>",{id:"red-ui-type-search",class:"red-ui-search red-ui-type-search"}).appendTo("#main-container");
-        var searchDiv = $("<div>",{class:"red-ui-search-container"}).appendTo(dialog);
+        searchDiv = $("<div>",{class:"red-ui-search-container"}).appendTo(dialog);
         searchInput = $('<input type="text">').attr("placeholder",RED._("search.addNode")).appendTo(searchDiv).searchBox({
             delay: 50,
             change: function() {
@@ -180,6 +181,8 @@ RED.typeSearch = (function() {
         }
     }
     function show(opts) {
+        addCallback = opts.add;
+        cancelCallback = opts.close||opts.cancel;
         if (!visible) {
             RED.keyboard.add("*","escape",function(){
                 hide();
@@ -200,9 +203,9 @@ RED.typeSearch = (function() {
             dialog.hide();
             searchResultsDiv.hide();
         }
-        refreshTypeList();
-        addCallback = opts.add;
-        closeCallback = opts.close;
+        // refreshTypeList();
+        refreshRuleType(opts.type, opts.putType)
+        
         RED.events.emit("type-search:open");
         //shade.show();
         dialog.css({left:opts.x+"px",top:opts.y+"px"}).show();
@@ -314,6 +317,36 @@ RED.typeSearch = (function() {
         }
         for (i=0;i<items.length;i++) {
             items[i].i = index++;
+            searchResults.editableList('addItem', items[i]);
+        }
+        setTimeout(function() {
+            selected = 0;
+            searchResults.children(":first").addClass('selected');
+        },100);
+    }
+    
+    function refreshRuleType(srcType, isInport){
+        searchResults.editableList('empty');
+        searchDiv.height("1px")
+        var items = [];
+        RED.nodes.registry.getNodeTypes().forEach(function(t) {
+            var def = RED.nodes.getType(t);
+            if (def.category !== 'config' && t !== 'unknown' && t !== 'tab' && t !== srcType) {
+                if(isInport){
+                    if(t === 'end'){
+                        return
+                    }
+                } else {
+                    if(t === "start"){
+                        return
+                    }
+                }
+                items.push({type:t,def: def, label:getTypeLabel(t,def)});
+            }
+        });
+        items.sort(sortTypeLabels);
+        for (i=0;i<items.length;i++) {
+            items[i].i = i;
             searchResults.editableList('addItem', items[i]);
         }
         setTimeout(function() {

@@ -185,6 +185,7 @@ RED.search = (function() {
             addButton: false,
             addItem: function(container,i,object) {
                 var node = object.node;
+                console.log(container,i,object);
                 if (node === undefined) {
                     $('<div>',{class:"red-ui-search-empty"}).text(RED._('search.empty')).appendTo(container);
 

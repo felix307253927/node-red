@@ -14,7 +14,8 @@
     "predev": "grunt build",
     "dev": "node red.js",
     "test": "grunt",
-    "build": "grunt build"
+    "build": "grunt build",
+    "upload": "rsync -avz . --exclude 'node_modules'  --exclude '.github' --exclude '.git' --exclude '.history' --exclude '.idea' --exclude '.vscode' --exclude 'public' felix@192.168.5.124:/home/felix/dialog-ui"
   },
   "bin": {
     "node-red": "./red.js",

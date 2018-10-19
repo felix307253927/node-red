@@ -53,6 +53,12 @@
         margin: 20px;
         height: calc(100% - 40px);
     }
+    #dialog-form{
+        .node-input-rule-value.text{
+            resize: vertical;
+            max-height: 360px;
+        }
+    }
 }
 .editor-tray-content {
     overflow: auto;

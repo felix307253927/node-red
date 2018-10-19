@@ -1199,13 +1199,13 @@ RED.editor = (function() {
                 });
                 nodeProperties.content.addClass("editor-tray-content");
 
-                var portLabels = stack.add({
-                    title: RED._("editor.portLabels"),
-                    onexpand: function() {
-                        refreshLabelForm(this.content,node);
-                    }
-                });
-                portLabels.content.addClass("editor-tray-content");
+                // var portLabels = stack.add({
+                //     title: RED._("editor.portLabels"),
+                //     onexpand: function() {
+                //         refreshLabelForm(this.content,node);
+                //     }
+                // });
+                // portLabels.content.addClass("editor-tray-content");
 
 
                 if (editing_node) {
@@ -1225,7 +1225,7 @@ RED.editor = (function() {
                     isDefaultIcon = true;
                 }
                 buildEditForm(nodeProperties.content,"dialog-form",type,ns);
-                buildLabelForm(portLabels.content,node);
+                // buildLabelForm(portLabels.content,node);
 
                 prepareEditDialog(node,node._def,"node-input", function() {
                     trayBody.i18n();
@@ -1795,10 +1795,11 @@ RED.editor = (function() {
                     expanded: true
                 });
                 nodeProperties.content.addClass("editor-tray-content");
-                var portLabels = stack.add({
-                    title: RED._("editor.portLabels")
-                });
-                portLabels.content.addClass("editor-tray-content");
+
+                // var portLabels = stack.add({
+                //     title: RED._("editor.portLabels")
+                // });
+                // portLabels.content.addClass("editor-tray-content");
 
                 if (editing_node) {
                     RED.sidebar.info.refresh(editing_node);
@@ -1850,7 +1851,7 @@ RED.editor = (function() {
                 });
                 $("#subflow-dialog-user-count").text(RED._("subflow.subflowInstances", {count:userCount})).show();
 
-                buildLabelForm(portLabels.content,subflow);
+                // buildLabelForm(portLabels.content,subflow);
                 trayBody.i18n();
             },
             close: function() {

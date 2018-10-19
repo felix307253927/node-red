@@ -16,7 +16,7 @@
 RED.sidebar = (function() {
 
     //$('#sidebar').tabs();
-    var sidebar_tabs = RED.tabs.create({
+    /* var sidebar_tabs = RED.tabs.create({
         id:"sidebar-tabs",
         onchange:function(tab) {
             $("#sidebar-content").children().hide();
@@ -38,7 +38,7 @@ RED.sidebar = (function() {
         // minimumActiveTabWidth: 70,
         collapsible: true
         // scrollable: true
-    });
+    }); */
 
     var knownTabs = {
 
@@ -64,7 +64,8 @@ RED.sidebar = (function() {
 
         options.wrapper = $('<div>',{style:"height:100%"}).appendTo("#sidebar-content")
         options.wrapper.append(options.content);
-        options.wrapper.hide();
+        // 只有Info节点， 直接显示
+        // options.wrapper.hide();
 
         if (!options.enableOnEdit) {
             options.shade = $('<div>',{class:"sidebar-shade hide"}).appendTo(options.wrapper);
@@ -89,13 +90,13 @@ RED.sidebar = (function() {
 
         knownTabs[options.id] = options;
 
-        if (options.visible !== false) {
-            sidebar_tabs.addTab(knownTabs[options.id]);
-        }
+        // if (options.visible !== false) {
+            // sidebar_tabs.addTab(knownTabs[options.id]);
+        // }
     }
 
     function removeTab(id) {
-        sidebar_tabs.removeTab(id);
+        // sidebar_tabs.removeTab(id);
         $(knownTabs[id].wrapper).remove();
         if (knownTabs[id].footer) {
             knownTabs[id].footer.remove();
@@ -162,7 +163,7 @@ RED.sidebar = (function() {
                 $("#editor-stack").css("right",newChartRight+1);
                 $("#sidebar").width(newSidebarWidth);
 
-                sidebar_tabs.resize();
+                // sidebar_tabs.resize();
                 RED.events.emit("sidebar:resize");
             },
             stop:function(event,ui) {
@@ -186,17 +187,17 @@ RED.sidebar = (function() {
             $("#main-container").addClass("sidebar-closed");
         } else {
             $("#main-container").removeClass("sidebar-closed");
-            sidebar_tabs.resize();
+            // sidebar_tabs.resize();
         }
         RED.events.emit("sidebar:resize");
     }
 
     function showSidebar(id) {
         if (id) {
-            if (!containsTab(id)) {
-                sidebar_tabs.addTab(knownTabs[id]);
-            }
-            sidebar_tabs.activateTab(id);
+            // if (!containsTab(id)) {
+            //     sidebar_tabs.addTab(knownTabs[id]);
+            // }
+            // sidebar_tabs.activateTab(id);
             if (!RED.menu.isSelected("menu-item-sidebar")) {
                 RED.menu.setSelected("menu-item-sidebar",true);
             }
@@ -204,7 +205,7 @@ RED.sidebar = (function() {
     }
 
     function containsTab(id) {
-        return sidebar_tabs.contains(id);
+        // return sidebar_tabs.contains(id);
     }
 
     function init () {
@@ -217,8 +218,9 @@ RED.sidebar = (function() {
         });
         showSidebar();
         RED.sidebar.info.init();
-        RED.sidebar.config.init();
-        RED.sidebar.context.init();
+        // RED.sidebar.config.init();
+        // RED.sidebar.context.init();
+
         // hide info bar at start if screen rather narrow...
         if ($(window).width() < 600) { RED.menu.setSelected("menu-item-sidebar",false); }
     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-RED.sidebar.config = (function() {
+/* RED.sidebar.config = (function() {
 
 
     var content = document.createElement("div");
@@ -311,4 +311,12 @@ RED.sidebar.config = (function() {
         show:show,
         refresh:refreshConfigNodeList
     }
-})();
+})(); */
+RED.sidebar.config = (function(){
+    var loop = function(){}
+    return {
+        init:loop,
+        show:loop,
+        refresh:loop
+    }
+})()

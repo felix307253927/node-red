@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-RED.sidebar.context = (function() {
+/* RED.sidebar.context = (function() {
 
     var content;
     var sections;
@@ -289,4 +289,10 @@ RED.sidebar.context = (function() {
     return {
         init: init
     }
-})();
+})(); */
+
+RED.sidebar.context = (function() {
+    return {
+        init: function(){}
+    }
+})()

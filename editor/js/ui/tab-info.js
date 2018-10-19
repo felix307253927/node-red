@@ -446,3 +446,14 @@ RED.sidebar.info = (function() {
         set: set
     }
 })();
+
+/* RED.sidebar.info = (function(){
+    var loop = function(){}
+    return {
+        init: loop,
+        show: loop,
+        refresh: loop,
+        clear: loop,
+        set: loop
+    }
+})() */

@@ -66,6 +66,9 @@
     pointer-events: none;
     -webkit-touch-callout: none;
     @include disable-selection;
+    display: inline-block;
+    max-width: 100px;
+    overflow: hidden;
 }
 
 .port_label {
