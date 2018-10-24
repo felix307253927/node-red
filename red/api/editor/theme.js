@@ -22,13 +22,13 @@ var clone = require("clone");
 
 var defaultContext = {
     page: {
-        title: "Unisound",
+        title: "对话系统制题工具",
         favicon: "favicon.ico",
         tabicon: "red/images/node-red-icon-black.svg"
     },
     header: {
-        title: "Unisound",
-        image: "red/images/node-red.png"
+        title: "对话系统制题工具",
+        image: "red/images/logo.png"
     },
     asset: {
         red: (process.env.NODE_ENV == "development")? "red/red.js":"red/red.min.js",

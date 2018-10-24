@@ -19,6 +19,14 @@
         <label for="node-input-URL"><i class="fa fa-tag"></i> URL</label>
         <input type="text" id="node-input-URL" placeholder="URL">
     </div>
+    <div class="form-row">
+        <label for="node-input-translate"><i class="fa fa-tag"></i> translate</label>
+        <input type="text" id="node-input-translate" placeholder="翻译">
+    </div>
+    <div class="form-row">
+        <label for="node-input-duration"><i class="fa fa-tag"></i> duration</label>
+        <input type="number" id="node-input-duration" placeholder="音频时长（单位:秒）">
+    </div>
 </script>
 
 
@@ -41,6 +49,12 @@
                 value: ""
             },
             URL: {
+                value: ""
+            },
+            duration: {
+                value: 0
+            },
+            translate: {
                 value: ""
             }
         },

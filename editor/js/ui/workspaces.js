@@ -67,7 +67,7 @@ RED.workspaces = (function() {
                 {
                     id: "node-dialog-delete",
                     class: 'leftButton'+((workspaceTabCount === 1)?" disabled":""),
-                    text: RED._("common.label.delete")+"dd", //'<i class="fa fa-trash"></i>',
+                    text: RED._("common.label.delete"), //'<i class="fa fa-trash"></i>',
                     click: function() {
                         deleteWorkspace(workspace);
                         RED.tray.close();
@@ -149,11 +149,11 @@ RED.workspaces = (function() {
                     '<input type="text" id="node-input-name">'+
                 '</div>').appendTo(dialogForm);
 
-                $('<div class="form-row">'+
-                    '<label for="node-input-disabled-btn" data-i18n="editor:workspace.status"></label>'+
-                    '<button id="node-input-disabled-btn" class="editor-button"><i class="fa fa-toggle-on"></i> <span id="node-input-disabled-label"></span></button> '+
-                    '<input type="checkbox" id="node-input-disabled" style="display: none;"/>'+
-                '</div>').appendTo(dialogForm);
+                // $('<div class="form-row">'+
+                //     '<label for="node-input-disabled-btn" data-i18n="editor:workspace.status"></label>'+
+                //     '<button id="node-input-disabled-btn" class="editor-button"><i class="fa fa-toggle-on"></i> <span id="node-input-disabled-label"></span></button> '+
+                //     '<input type="checkbox" id="node-input-disabled" style="display: none;"/>'+
+                // '</div>').appendTo(dialogForm);
 
                 $('<div class="form-row node-text-editor-row">'+
                     '<label for="node-input-info" data-i18n="editor:workspace.info" style="width:300px;"></label>'+

@@ -82,7 +82,7 @@
                 $("body").i18n();
                 $("#palette > .palette-spinner").hide();
                 $(".palette-scroll").removeClass("hide");
-                $("#palette-search").removeClass("hide");
+                // $("#palette-search").removeClass("hide");
                 loadFlows(function() {
                     if (RED.settings.theme("projects.enabled",false)) {
                         RED.projects.refresh(function(activeProject) {

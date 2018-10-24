@@ -339,7 +339,12 @@ RED.clipboard = (function () {
     function getRules(ruleNode, nodeList) {
         let patterns = [],
             nextName
-        ruleNode.rules.forEach(r => patterns.push(r))
+        ruleNode.rules.forEach(r => {
+            patterns.push({
+                oriPattern:r.oriPattern,
+                sample: r.sample
+            })
+        })
         const id = (ruleNode.wires[0] || [])[0]
         if (id) {
             for (let i = 0, l = nodeList.length; i < l; i++) {
@@ -384,6 +389,8 @@ RED.clipboard = (function () {
                     name: node.name,
                     text: node.text,
                     URL: node.URL,
+                    translate: node.translate,
+                    duration: +node.duration || 0,
                     status: node.type,
                 }
                 if (node.type !== 'end') {
