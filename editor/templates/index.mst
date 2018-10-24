@@ -59,7 +59,7 @@
     <div id="palette">
         <img src="red/images/spin.svg" class="palette-spinner hide"/>
         <div id="palette-search" class="palette-search hide">
-            <input type="text" data-i18n="[placeholder]palette.filter"></input>
+            <input type="text" data-i18n="[placeholder]palette.filter"/>
         </div>
         <div id="palette-container" class="palette-scroll hide"></div>
         <div id="palette-footer">

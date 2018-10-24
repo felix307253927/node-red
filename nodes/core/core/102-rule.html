@@ -151,7 +151,9 @@
             // if(this.status){
             //     RED.nodes.updateColor(this, this.status.fill)
             // }
-            RED.nodes.updateColor(this, checkStatus(this))
+            // console.log("add ", this);
+            // RED.nodes.updateColor(this, checkStatus(this), true)
+            this.color = checkStatus(this)
         },
         onadd: function(){
         }

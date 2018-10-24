@@ -1,0 +1,77 @@
+<!-- start html file that corresponds to the 99-start.js file              -->
+<!-- This creates and configures the onscreen elements of the node           -->
+
+<!-- If you use this as a template, update the copyright with your own name. -->
+
+<!-- First, the content of the edit dialog is defined.                       -->
+
+<script type="text/x-red" data-template-name="wildcard">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-text"><i class="fa fa-tag"></i> text</label>
+        <input type="text" id="node-input-text" placeholder="text">
+    </div>
+    <div class="form-row">
+        <label for="node-input-URL"><i class="fa fa-tag"></i> URL</label>
+        <input type="text" id="node-input-URL" placeholder="URL">
+    </div>
+    <div class="form-row">
+        <label for="node-input-translate"><i class="fa fa-tag"></i> translate</label>
+        <input type="text" id="node-input-translate" placeholder="翻译">
+    </div>
+    <div class="form-row">
+        <label for="node-input-duration"><i class="fa fa-tag"></i> duration</label>
+        <input type="number" id="node-input-duration" placeholder="音频时长（单位:秒）">
+    </div>
+</script>
+
+
+<!-- Next, some simple help text is provided for the node.                   -->
+<script type="text/x-red" data-help-name="wildcard">
+    <p>通配节点</p>
+    <p>定义节点间规则之外的跳转</p>
+</script>
+
+<!-- Finally, the node type is registered along with all of its properties   -->
+<!-- The example below shows a small subset of the properties that can be set-->
+<script type="text/javascript">
+    RED.nodes.registerType('wildcard', {
+        category: 'node', // the palette category
+        color: "#fead88", // set icon color
+        inputs: 1,
+        outputs: 1,
+        icon: "inject.png",
+        defaults: {
+            name: {
+                value: ""
+            },
+            text: {
+                value: ""
+            },
+            URL: {
+                value: ""
+            },
+            duration: {
+                value: 0
+            },
+            translate: {
+                value: ""
+            }
+        },
+        label: function () { // sets the default label contents
+            return this.name || "wildcard";
+        },
+        labelStyle: function () { // sets the class to apply to the label
+            return this.name ? "node_label_italic" : "";
+        },
+        inputLabels: function (i) {
+            return "节点入口";
+        },
+        outputLabels: function () {
+            return "规则出口";
+        },
+    });
+</script>

@@ -642,14 +642,14 @@ RED.view = (function() {
                 var link = {source: src, sourcePort:src_port, target: dst};
                 RED.nodes.addLink(link);
                 historyEvent.links = [link];
-                hideDragLines();
+                
                 if (!quickAddLink && drag_line.portType === PORT_TYPE_OUTPUT && nn.outputs > 0) {
                     showDragLines([{node:nn,port:0,portType:PORT_TYPE_OUTPUT}]);
                 } else if (!quickAddLink && drag_line.portType === PORT_TYPE_INPUT && nn.inputs > 0) {
                     showDragLines([{node:nn,port:0,portType:PORT_TYPE_INPUT}]);
-                } else {
-                    resetMouseVars();
                 }
+                hideDragLines();
+                resetMouseVars();
             } else {
                 hideDragLines();
                 resetMouseVars();
@@ -709,7 +709,7 @@ RED.view = (function() {
                     var drag_line = quickAddLink||drag_lines[0];
                     if(drag_line && drag_line.node){
                         var src = drag_line.node
-                        if(src.type !== 'rule'){
+                        if(src.type !== 'rule' && src.type !== 'wildcard'){
                             quickAddNode.call(this, point, 'rule')
                         } else {
                             RED.typeSearch.show({
@@ -1043,7 +1043,7 @@ RED.view = (function() {
                 d3.event.stopPropagation();
                 var point  = d3.mouse(this)
                 var mainPos = $("#main-container").position();
-                if(mousedown_node.type !== 'rule'){
+                if(mousedown_node.type !== 'rule' && mousedown_port_type !== 'wildcard'){
                     quickAddNode.call(this, point, 'rule')
                 } else {
                     RED.typeSearch.show({
@@ -1542,13 +1542,12 @@ RED.view = (function() {
         //vis.call(d3.behavior.zoom().on("zoom"), null);
         if (d3.event.button === 1) {
             return;
-        } else if(d.type === 'rule' && RED.nodes.links.some(function(l){
-            if(portType && l.target.id === d.id || !portType && d.id === l.source.id){
-                return true;
-            }
+        }/*  else if(d.type === 'rule' && RED.nodes.links.some(function(l){
+            // rule 节点只能连一个 link
+            return (portType && l.target.id === d.id || !portType && d.id === l.source.id)
         })){
             return
-        }
+        } */
         mousedown_node = d;
         mousedown_port_type = portType;
         mousedown_port_index = portIndex || 0;
@@ -1571,13 +1570,12 @@ RED.view = (function() {
             if (drag_lines[0].node===d) {
                 return
             }
-        } else if(d.type === 'rule' && RED.nodes.links.some(function(l){
-            if(portType && l.target.id === d.id || !portType && d.id === l.source.id){
-                return true;
-            }
+        }/*  else if(d.type === 'rule' && RED.nodes.links.some(function(l){
+            // rule 节点只能连一个 link
+            return (portType && l.target.id === d.id || !portType && d.id === l.source.id)
         })){
             return
-        }
+        } */
         document.body.style.cursor = "";
         if (mouse_mode == RED.state.JOINING || mouse_mode == RED.state.QUICK_JOINING) {
             if (typeof TouchEvent != "undefined" && d3.event instanceof TouchEvent) {
@@ -1758,13 +1756,14 @@ RED.view = (function() {
                 });
             },500);
         }
-        if(d.type === 'rule' && RED.nodes.links.some(function(l){
+        // rule节点只能连接一个link
+        /* if(d.type === 'rule' && RED.nodes.links.some(function(l){
             if(portType && l.target.id === d.id || !portType && d.id === l.source.id){
                 return true;
             }
         })){
             return port.classed("port_hovered", false);
-        }
+        } */
         port.classed("port_hovered",active);
     }
     function portMouseOut(port,d,portType,portIndex) {
@@ -2778,7 +2777,6 @@ RED.view = (function() {
                         node.dy -= minY;
                         if (node.n._def.onadd) {
                             try {
-                                console.log('node add');
                                 node.n._def.onadd.call(node.n);
                             } catch(err) {
                                 console.log("Definition error: "+node.n.type+".onadd:",err);

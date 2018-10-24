@@ -331,7 +331,7 @@ RED.typeSearch = (function() {
         var items = [];
         RED.nodes.registry.getNodeTypes().forEach(function(t) {
             var def = RED.nodes.getType(t);
-            if (def.category !== 'config' && t !== 'unknown' && t !== 'tab' && t !== srcType) {
+            if (def.category !== 'config' && t !== 'unknown' && t !== 'tab' && t !== 'wildcard' && t !== srcType) {
                 if(isInport){
                     if(t === 'end'){
                         return

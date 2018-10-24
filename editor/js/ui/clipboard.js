@@ -179,13 +179,13 @@ RED.clipboard = (function () {
             // 获取当前flow nodes
             var flow = ""
             var activeWorkspace = RED.workspaces.active();
-                nodes = RED.nodes.filterNodes({
-                    z: activeWorkspace
-                });
-                var parentNode = RED.nodes.workspace(activeWorkspace) || RED.nodes.subflow(activeWorkspace);
-                nodes.unshift(parentNode);
-                nodes = RED.nodes.createExportableNodeSet(nodes);
-                // end
+            nodes = RED.nodes.filterNodes({
+                z: activeWorkspace
+            });
+            var parentNode = RED.nodes.workspace(activeWorkspace) || RED.nodes.subflow(activeWorkspace);
+            nodes.unshift(parentNode);
+            nodes = RED.nodes.createExportableNodeSet(nodes);
+            // end
 
             if (nodes.length > 0) {
 
@@ -336,25 +336,31 @@ RED.clipboard = (function () {
         return result;
     }
 
+    /**
+     * @param {*} ruleNode 规则节点
+     * @param {*} nodeList 非规则节点列表
+     */
     function getRules(ruleNode, nodeList) {
         let patterns = [],
-            nextName
+            nextName = []
         ruleNode.rules.forEach(r => {
             patterns.push({
-                oriPattern:r.oriPattern,
+                oriPattern: r.oriPattern,
                 sample: r.sample
             })
         })
-        const id = (ruleNode.wires[0] || [])[0]
-        if (id) {
-            for (let i = 0, l = nodeList.length; i < l; i++) {
-                const n = nodeList[i]
-                if (id === n.id && n.type !== 'rule') {
-                    nextName = n.name
-                    break;
+        const ids = (ruleNode.wires[0] || [])
+        ids.forEach(id=>{
+            if (id) {
+                for (let i = 0, l = nodeList.length; i < l; i++) {
+                    const n = nodeList[i]
+                    if (id === n.id) {
+                        nextName.push(n.name)
+                        break;
+                    }
                 }
             }
-        }
+        })
         return {
             nextName,
             patterns
@@ -381,6 +387,7 @@ RED.clipboard = (function () {
             domainName: "",
             nodeList
         }
+        const nNodes = arr.filter(r => r.type !== 'rule')
         arr.forEach(node => {
             if (node.type === 'tab') {
                 ret.domainName = node.label
@@ -392,13 +399,16 @@ RED.clipboard = (function () {
                     translate: node.translate,
                     duration: +node.duration || 0,
                     status: node.type,
+                    wildcard: []
                 }
                 if (node.type !== 'end') {
                     next.nextNodes = []
                     const nexts = findNextNode(node.wires, arr)
                     nexts.forEach(n => {
                         if (n.type === 'rule') {
-                            next.nextNodes.push(getRules(n, arr))
+                            next.nextNodes.push(getRules(n, nNodes))
+                        } else if (n.type === 'wildcard') {
+                            next.wildcard.push(n.name)
                         }
                     })
                     // patterns: getRules(findNextNode(node.wires, arr)[0], arr)
