@@ -2177,11 +2177,11 @@ RED.view = (function() {
                         var icon_group = node.append("g")
                             .attr("class","node_icon_group")
                             .attr("x",0).attr("y",0);
-
+                        var width = d.type === 'rule'? 30: 22;
                         var icon_shade = icon_group.append("rect")
                             .attr("x",0).attr("y",0)
                             .attr("class","node_icon_shade")
-                            .attr("width","30")
+                            .attr("width", width)
                             .attr("stroke","none")
                             .attr("fill","#000")
                             .attr("fill-opacity","0.05")
@@ -2195,7 +2195,7 @@ RED.view = (function() {
                             .attr("height","30");
 
                         var icon_shade_border = icon_group.append("path")
-                            .attr("d",function(d) { return "M 30 1 l 0 "+(d.h-2)})
+                            .attr("d",function(d) { return "M 22 1 l 0 "+(d.h-2)})
                             .attr("class","node_icon_shade_border")
                             .attr("stroke-opacity","0.1")
                             .attr("stroke","#000")
@@ -2221,9 +2221,10 @@ RED.view = (function() {
                         var img = new Image();
                         img.src = icon_url;
                         img.onload = function() {
+                            var iw = d.type === 'rule'? 15: 10
                             icon.attr("width",Math.min(img.width,30));
                             icon.attr("height",Math.min(img.height,30));
-                            icon.attr("x",15-Math.min(img.width,30)/2);
+                            icon.attr("x",iw-Math.min(img.width,30)/2);
                             //if ("right" == d._def.align) {
                             //    icon.attr("x",function(d){return d.w-img.width-1-(d.outputs>0?5:0);});
                             //    icon_shade.attr("x",function(d){return d.w-30});
@@ -2236,7 +2237,7 @@ RED.view = (function() {
                     }
                     if (!isLink || isRule) {
                         if(!isRule){
-                            var text = node.append("svg:text").attr("class","node_label").attr("x", 38).attr("dy", ".35em").attr("text-anchor","start");
+                            var text = node.append("svg:text").attr("class","node_label").attr("x", 25).attr("dy", ".35em").attr("text-anchor","start");
                             if (d._def.align) {
                                 text.attr("class","node_label node_label_"+d._def.align);
                                 if (d._def.align === "right") {
@@ -2362,7 +2363,7 @@ RED.view = (function() {
                                             l = d.type;
                                         }
                                     }
-                                    return l.substr(0, 5);
+                                    return l.substr(0, 6);
                                 })
                                 .attr("y", function(d){return (d.h/2)-1;})
                                 .attr("class",function(d){
@@ -2415,7 +2416,7 @@ RED.view = (function() {
 
                             thisNode.selectAll(".node_icon").attr("y",function(d){return (d.h-d3.select(this).attr("height"))/2;});
                             thisNode.selectAll(".node_icon_shade").attr("height",function(d){return d.h;});
-                            thisNode.selectAll(".node_icon_shade_border").attr("d",function(d){ return "M "+(("right" == d._def.align) ?0:30)+" 1 l 0 "+(d.h-2)});
+                            thisNode.selectAll(".node_icon_shade_border").attr("d",function(d){ return "M "+(("right" == d._def.align) ?0:22)+" 1 l 0 "+(d.h-2)});
 
                             thisNode.selectAll(".node_button").attr("opacity",function(d) {
                                 return (activeSubflow||!isButtonEnabled(d))?0.4:1

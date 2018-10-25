@@ -61,8 +61,8 @@
 }
 .node_label {
     stroke-width: 0;
-    fill: #333;
-    font-size: 14px;
+    fill: #000;
+    font-size: 12px;
     pointer-events: none;
     -webkit-touch-callout: none;
     @include disable-selection;
