@@ -387,7 +387,7 @@ RED.clipboard = (function () {
             domainName: "",
             nodeList: nodeList
         }
-        var nNodes = arr.filter(function(r) {r.type !== 'rule'})
+        var nNodes = arr.filter(function(r) {return r.type !== 'rule'})
         arr.forEach(function(node) {
             if (node.type === 'tab') {
                 ret.domainName = node.label
