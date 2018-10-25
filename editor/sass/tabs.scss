@@ -86,12 +86,13 @@
                     color: #333;
                 }
                 a.red-ui-tab-close {
-                    color: #aaa;
-                    background: $tab-background-active;
-                    &:hover {
-                        background: $workspace-button-background-hover !important;
-                        color: $workspace-button-color-hover;
-                    }
+                    // color: #aaa;
+                    // background: $tab-background-active;
+                    // &:hover {
+                    //     background: $workspace-button-background-hover !important;
+                    //     color: $workspace-button-color-hover;
+                    // }
+                    display: none !important;
                 }
                 img.red-ui-tab-icon {
                     opacity: 0.2;
