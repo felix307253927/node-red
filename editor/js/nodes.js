@@ -242,7 +242,7 @@ RED.nodes = (function () {
         var rg = ["rule", 'wildcard'];
         if (tt !== st && (rg.includes(tt) || st === 'rule')) {
             // 规则节点不能 连接 通配节点
-            if(st === 'rule' && tt === 'wildcard'){
+            if (st === 'rule' && tt === 'wildcard') {
                 return
             }
             // for (var i = 0, len = links.length; i < len; i++) {
@@ -290,7 +290,24 @@ RED.nodes = (function () {
                     return (l.source === node) || (l.target === node);
                 });
                 removedLinks.forEach(function (l) {
-                    links.splice(links.indexOf(l), 1);
+                    var link = links.splice(links.indexOf(l), 1)[0];
+                    // 为没有link的节点添加 未连接标示
+                    if(link){
+                        var node = id === link.source.id? link.target: link.source
+                        if(id === link.source.id){
+                            if(!links.some(function(ln){
+                                return ln.target.id === node.id
+                            })){
+                                d3.select(node._ports[0].parentNode).select(".port_input .port").classed("port_unuse", true)
+                            }
+                        } else {
+                            if(!links.some(function(ln){
+                                return ln.source.id === node.id
+                            })){
+                                d3.select(node._ports[0].parentNode).select(".port_output .port").classed("port_unuse", true)
+                            }
+                        }
+                    }
                 });
                 var updatedConfigNode = false;
                 for (var d in node._def.defaults) {
@@ -343,22 +360,12 @@ RED.nodes = (function () {
         if (index != -1) {
             links.splice(index, 1);
             var nodes = d3.selectAll(".node.nodegroup")
-            var sp = true,
-                tp = true;
-            if (l.source.type === "rule") {
-                sp = true
-            } else {
-                sp = !RED.nodes.links.some(function (ln) {
+            var sp = !RED.nodes.links.some(function (ln) {
                     return l.source.id === ln.source.id
-                })
-            }
-            if (l.target.type === "rule") {
-                tp = true
-            } else {
+                }),
                 tp = !RED.nodes.links.some(function (ln) {
                     return l.target.id === ln.target.id
-                })
-            }
+                });
             nodes.select("[id='" + l.source.id + "'] .port_output .port").classed("port_unuse", sp)
             nodes.select("[id='" + l.target.id + "'] .port_input .port").classed("port_unuse", tp)
         }
@@ -1580,7 +1587,7 @@ RED.nodes = (function () {
                 setDirty(d);
             }
         },
-        updateColor(node, color) {
+        updateColor: function (node, color) {
             node.color = color
             var react;
             if (node._ports && node._ports[0]) {

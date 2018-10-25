@@ -27,7 +27,7 @@ function authenticate() {
     if (typeof username !== 'string') {
         username = username.username;
     }
-    const args = Array.from(arguments);
+    var args = Array.from(arguments);
     return api.get(username).then(function(user) {
         if (user) {
             if (args.length === 2) {

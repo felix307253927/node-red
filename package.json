@@ -11,11 +11,10 @@
   "main": "red/red.js",
   "scripts": {
     "start": "node red.js",
-    "predev": "grunt build",
-    "dev": "node red.js",
+    "dev": "grunt dev",
     "test": "grunt",
     "build": "grunt build",
-    "upload": "rsync -avz . --exclude 'node_modules'  --exclude '.github' --exclude '.git' --exclude '.history' --exclude '.idea' --exclude '.vscode' --exclude 'public' felix@192.168.5.124:/home/felix/dialog-ui"
+    "upload": "rsync -avz . --exclude 'node_modules'  --exclude '.github' --exclude '.git' --exclude '.history' --exclude '.idea' --exclude '.vscode' --exclude 'public' felix@192.168.5.124:/opt/home/felix/dialog-ui"
   },
   "bin": {
     "node-red": "./red.js",

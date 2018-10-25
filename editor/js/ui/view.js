@@ -2533,7 +2533,7 @@ RED.view = (function() {
                             showTouchMenu(obj,pos);
                         },touchLongPressTimeout);
                     })
-                l.append("svg:path").attr("class","link_outline link_path");
+                // l.append("svg:path").attr("class","link_outline link_path");
                 l.append("svg:path").attr("class","link_line link_path")
                     .classed("link_link", function(d) { return d.link })
                     .classed("link_subflow", function(d) { return !d.link && activeSubflow });

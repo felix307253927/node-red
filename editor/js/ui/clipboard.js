@@ -341,19 +341,19 @@ RED.clipboard = (function () {
      * @param {*} nodeList 非规则节点列表
      */
     function getRules(ruleNode, nodeList) {
-        let patterns = [],
+        var patterns = [],
             nextName = []
-        ruleNode.rules.forEach(r => {
+        ruleNode.rules.forEach(function(r) {
             patterns.push({
                 oriPattern: r.oriPattern,
                 sample: r.sample
             })
         })
-        const ids = (ruleNode.wires[0] || [])
-        ids.forEach(id=>{
+        var ids = (ruleNode.wires[0] || [])
+        ids.forEach(function(id){
             if (id) {
-                for (let i = 0, l = nodeList.length; i < l; i++) {
-                    const n = nodeList[i]
+                for (var i = 0, l = nodeList.length; i < l; i++) {
+                    var n = nodeList[i]
                     if (id === n.id) {
                         nextName.push(n.name)
                         break;
@@ -362,17 +362,17 @@ RED.clipboard = (function () {
             }
         })
         return {
-            nextName,
-            patterns
+            nextName: nextName,
+            patterns: patterns
         }
     }
 
     function findNextNode(wires, nodeList) {
         wires = wires[0] || []
-        const nextNodes = []
-        wires.forEach(id => {
-            for (let i = 0, l = nodeList.length; i < l; i++) {
-                const n = nodeList[i]
+        var nextNodes = []
+        wires.forEach(function(id) {
+            for (var i = 0, l = nodeList.length; i < l; i++) {
+                var n = nodeList[i]
                 if (id === n.id) {
                     return nextNodes.push(n)
                 }
@@ -382,17 +382,17 @@ RED.clipboard = (function () {
     }
 
     function formatJson(arr) {
-        const nodeList = []
-        const ret = {
+        var nodeList = []
+        var ret = {
             domainName: "",
-            nodeList
+            nodeList: nodeList
         }
-        const nNodes = arr.filter(r => r.type !== 'rule')
-        arr.forEach(node => {
+        var nNodes = arr.filter(function(r) {r.type !== 'rule'})
+        arr.forEach(function(node) {
             if (node.type === 'tab') {
                 ret.domainName = node.label
             } else if (node.type !== 'rule') {
-                const next = {
+                var next = {
                     name: node.name,
                     text: node.text,
                     URL: node.URL,
@@ -403,8 +403,8 @@ RED.clipboard = (function () {
                 }
                 if (node.type !== 'end') {
                     next.nextNodes = []
-                    const nexts = findNextNode(node.wires, arr)
-                    nexts.forEach(n => {
+                    var nexts = findNextNode(node.wires, arr)
+                    nexts.forEach(function(n) {
                         if (n.type === 'rule') {
                             next.nextNodes.push(getRules(n, nNodes))
                         } else if (n.type === 'wildcard') {

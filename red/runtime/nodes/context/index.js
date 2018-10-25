@@ -162,7 +162,7 @@ function load() {
                 defaultStore = "memory";
             }
             hasConfiguredStore = true;
-            storeList = Object.keys(stores).filter(n=>!(defaultIsAlias && n==="default") && n!== "_");
+            storeList = Object.keys(stores).filter(function(n) {return !(defaultIsAlias && n==="default") && n!== "_"});
         } else {
             // No configured plugins
             log.info(log._("context.log-store-init", {name:"default", info:"module=memory"}));

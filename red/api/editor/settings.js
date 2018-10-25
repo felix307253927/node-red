@@ -33,7 +33,7 @@ module.exports = {
         if (req.user) {
             safeSettings.user = {}
             var props = ["anonymous","username","image","permissions"];
-            props.forEach(prop => {
+            props.forEach(function(prop) {
                 if (req.user.hasOwnProperty(prop)) {
                     safeSettings.user[prop] = req.user[prop];
                 }

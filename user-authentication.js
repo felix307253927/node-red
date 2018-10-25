@@ -1,4 +1,4 @@
-const users = new Map([
+var users = new Map([
   ['admin', {
     pwd: '123123',
     auth: "*"
@@ -13,7 +13,7 @@ module.exports = {
     return new Promise(function (resolve) {
       // Do whatever work is needed to check username is a valid
       // user.
-      const user = users.get(username)
+      var user = users.get(username)
       if (user) {
         // Resolve with the user object. It must contain
         // properties 'username' and 'permissions'
@@ -32,7 +32,7 @@ module.exports = {
     return new Promise(function (resolve) {
       // Do whatever work is needed to validate the username/password
       // combination.
-      const user = users.get(username)
+      var user = users.get(username)
       if (user && user.pwd === password) {
         // Resolve with the user object. Equivalent to having
         // called users(username);
