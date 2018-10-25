@@ -505,9 +505,13 @@ module.exports = function(grunt) {
         'Builds editor content',
         ['clean:build','jsonlint','concat:build','concat:vendor','copy:build', 'uglify:build', 'sass:build','attachCopyright']);
 
+    grunt.registerTask('build:dev',
+        'Developer mode: Builds editor content ',
+        ['clean:build','jsonlint','concat:build','concat:vendor','copy:build', 'sass:build','attachCopyright']);
+
     grunt.registerTask('dev',
         'Developer mode: run node-red, watch for source changes and build/restart',
-        ['build','setDevEnv','concurrent:dev']);
+        ['build:dev','setDevEnv','concurrent:dev']);
 
     grunt.registerTask('release',
         'Create distribution zip file',
