@@ -2075,8 +2075,8 @@ RED.view = (function() {
 
             nodeEnter.each(function(d,i) {
                     var node = d3.select(this);
-                    var isRule = d.type==='rule'
-                    var isLink = d.type === "link in" || d.type === "link out" || isRule;
+                    var isRule = false //d.type==='rule'
+                    var isLink = d.type === "link in" || d.type === "link out";
                     node.attr("id",d.id);
                     var l = RED.utils.getNodeLabel(d);
                     if (isLink) {
@@ -2267,7 +2267,7 @@ RED.view = (function() {
 
             node.each(function(d,i) {
                     if (d.dirty) {
-                        var isLink = d.type === "link in" || d.type === "link out" || d.type==='rule';
+                        var isLink = d.type === "link in" || d.type === "link out" //|| d.type==='rule';
                         dirtyNodes[d.id] = d;
                         //if (d.x < -50) deleteSelection();  // Delete nodes if dragged back to palette
                         if (!isLink && d.resize) {

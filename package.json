@@ -14,7 +14,7 @@
     "dev": "grunt dev",
     "test": "grunt",
     "build": "grunt build",
-    "upload": "rsync -avz . --exclude 'node_modules'  --exclude '.github' --exclude '.git' --exclude '.history' --exclude '.idea' --exclude '.vscode' --exclude 'public' felix@192.168.5.124:/opt/home/felix/dialog-ui"
+    "upload": "rsync -avz . --exclude 'node_modules'  --exclude '.github' --exclude '.git' --exclude '.history' --exclude '.idea' --exclude '.vscode' --exclude 'public' felix@192.168.5.124:/opt/home/felix/dialog-tools"
   },
   "bin": {
     "node-red": "./red.js",
