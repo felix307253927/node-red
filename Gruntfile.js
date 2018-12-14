@@ -374,6 +374,57 @@ module.exports = function(grunt) {
                     }
                 ]
             },
+            dev: {
+                files:[
+                    // start dev file
+                    {
+                        src: 'editor/js/main.js',
+                        dest: 'public/red/main.min.js'
+                    },
+                    {
+                        src: 'public/red/red.js',
+                        dest: 'public/red/red.min.js'
+                    },
+                    {
+                        src: 'editor/js/keymap.json',
+                        dest: 'public/red/keymap.json'
+                    },
+                    {
+                        cwd: 'editor/images',
+                        src: '**',
+                        expand: true,
+                        dest: 'public/red/images/'
+                    },
+                    {
+                        cwd: 'editor/vendor',
+                        src: [
+                            'ace/**',
+                            //'bootstrap/css/**',
+                            'bootstrap/img/**',
+                            'jquery/css/**',
+                            'font-awesome/**'
+                        ],
+                        expand: true,
+                        dest: 'public/vendor/'
+                    },
+                    {
+                        cwd: 'editor/icons',
+                        src: '**',
+                        expand: true,
+                        dest: 'public/icons/'
+                    },
+                    {
+                        expand: true,
+                        src: ['editor/index.html','editor/favicon.ico'],
+                        dest: 'public/',
+                        flatten: true
+                    },
+                    {
+                        src: 'CHANGELOG.md',
+                        dest: 'public/red/about'
+                    }
+                ]
+            },
             release: {
                 files: [{
                     mode: true,
@@ -507,11 +558,11 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build:dev',
         'Developer mode: Builds editor content ',
-        ['clean:build','jsonlint','concat:build','concat:vendor','copy:build', 'sass:build','attachCopyright']);
+        ['clean:build','jsonlint','concat:build','concat:vendor','copy:dev', 'sass:build']);
 
     grunt.registerTask('dev',
         'Developer mode: run node-red, watch for source changes and build/restart',
-        ['build:dev','setDevEnv','concurrent:dev']);
+        ['build:dev','setDevEnv']);
 
     grunt.registerTask('release',
         'Create distribution zip file',

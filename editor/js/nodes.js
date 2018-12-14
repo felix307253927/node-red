@@ -54,7 +54,19 @@ RED.nodes = (function () {
                 },
                 info: {
                     value: ""
-                }
+                },
+                male: {
+                    value: ""
+                },
+                female: {
+                    value: ""
+                },
+                bgPic: {
+                    value: ""
+                },
+                icn: {
+                    value: ""
+                },
             }
         };
 

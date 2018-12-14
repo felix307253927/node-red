@@ -86,6 +86,10 @@ RED.workspaces = (function() {
                     text: RED._("common.label.done"),
                     click: function() {
                         var label = $( "#node-input-name" ).val();
+                        var male = $( "#node-input-male" ).val();
+                        var female = $( "#node-input-female" ).val();
+                        var bgPic = $( "#node-input-bgPic" ).val();
+                        var icon = $( "#node-input-icon" ).val();
                         var changed = false;
                         var changes = {};
                         if (workspace.label != label) {
@@ -105,6 +109,26 @@ RED.workspaces = (function() {
                             changes.info = workspace.info;
                             changed = true;
                             workspace.info = info;
+                        }
+                        if(workspace.male !== male){
+                            changes.male = workspace.male;
+                            changed = true;
+                            workspace.male = male;
+                        }
+                        if(workspace.female !== female){
+                            changes.female = workspace.female;
+                            changed = true;
+                            workspace.female = female;
+                        }
+                        if(workspace.bgPic !== bgPic){
+                            changes.bgPic = workspace.bgPic;
+                            changed = true;
+                            workspace.bgPic = bgPic;
+                        }
+                        if(workspace.icn !== icon){
+                            changes.icn = workspace.icn;
+                            changed = true;
+                            workspace.icn = icon;
                         }
                         $("#red-ui-tab-"+(workspace.id.replace(".","-"))).toggleClass('workspace-disabled',workspace.disabled);
                         // $("#workspace").toggleClass("workspace-disabled",workspace.disabled);
@@ -148,7 +172,22 @@ RED.workspaces = (function() {
                     '<label for="node-input-name" data-i18n="[append]editor:common.label.name"><i class="fa fa-tag"></i> </label>'+
                     '<input type="text" id="node-input-name">'+
                 '</div>').appendTo(dialogForm);
-
+                $('<div class="form-row">'+
+                    '<label for="node-input-male" ><i class="fa fa-tag"></i>头像男</label>'+
+                    '<input type="text" id="node-input-male">'+
+                '</div>').appendTo(dialogForm);
+                $('<div class="form-row">'+
+                    '<label for="node-input-female" ><i class="fa fa-tag"></i>头像女</label>'+
+                    '<input type="text" id="node-input-female">'+
+                '</div>').appendTo(dialogForm);
+                $('<div class="form-row">'+
+                    '<label for="node-input-bgPic" ><i class="fa fa-tag"></i>图片</label>'+
+                    '<input type="text" id="node-input-bgPic">'+
+                '</div>').appendTo(dialogForm);
+                $('<div class="form-row">'+
+                    '<label for="node-input-icon"><i class="fa fa-tag"></i>icon</label>'+
+                    '<input type="text" id="node-input-icon">'+
+                '</div>').appendTo(dialogForm);
                 // $('<div class="form-row">'+
                 //     '<label for="node-input-disabled-btn" data-i18n="editor:workspace.status"></label>'+
                 //     '<button id="node-input-disabled-btn" class="editor-button"><i class="fa fa-toggle-on"></i> <span id="node-input-disabled-label"></span></button> '+
@@ -198,6 +237,10 @@ RED.workspaces = (function() {
                 $('<input type="text" style="display: none;" />').prependTo(dialogForm);
                 dialogForm.submit(function(e) { e.preventDefault();});
                 $("#node-input-name").val(workspace.label);
+                $("#node-input-male").val(workspace.male);
+                $("#node-input-female").val(workspace.female);
+                $("#node-input-bgPic").val(workspace.bgPic);
+                $("#node-input-icon").val(workspace.icn);
                 RED.text.bidi.prepareInput($("#node-input-name"));
                 tabflowEditor.getSession().setValue(workspace.info || "", -1);
                 dialogForm.i18n();

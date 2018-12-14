@@ -7,9 +7,13 @@
 
 <script type="text/x-red" data-template-name="rule">
     <div class="form-row">
-            <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-            <input type="text" id="node-input-name" placeholder="Name">
-        </div>
+        <label for="node-input-name"><i class="fa fa-tag"></i> 名称</label>
+        <input type="text" id="node-input-name" placeholder="名称">
+    </div>
+    <div class="form-row">
+        <label for="node-input-weight"><i class="fa fa-tag"></i> 权重</label>
+        <input type="text" id="node-input-weight" placeholder="权重">
+    </div>
     <div class="form-row node-input-rule-container-row">
         <ol id="node-input-rule-container"></ol>
     </div>
@@ -62,7 +66,8 @@
         icon: "link-out.png",
         defaults: {
             name: {value: ""},
-            rules: {value:[{oriPattern:"", sample:"", text:""}]},
+            weight: {value: "1"},
+            rules: {value:[{oriPattern:"", sample:"", text:"",weight:"1"}]},
         },
         inputLabels: function(i) {
             return "节点入口";
@@ -95,9 +100,11 @@
                     var label2 = $("<label/>", {style:"display:block;width:100%"}).html("示例").appendTo(row)
                     var label3 = $("<label/>", {style:"display:block;width:100%"}).html("描述").appendTo(row)
                     var label1 = $("<label/>", {style:"display:block;width:100%"}).html("正则").appendTo(row)
+                    var label4 = $("<label/>", {style:"display:block;width:100%"}).html("权重").appendTo(row)
                     $('<input/>',{class:"node-input-rule-value sample",type:"text",style:"margin-left:5px;width:80%"}).val(rule.sample).appendTo(label2)
                     $('<textarea/>',{class:"node-input-rule-value text",style:"margin-left:5px;width:80%"}).val(rule.text).appendTo(label3)
                     $('<textarea/>',{class:"node-input-rule-value pattern",style:"margin-left:5px;width:80%"}).val(rule.oriPattern).appendTo(label1)
+                    $('<input/>',{class:"node-input-rule-value sample",type:"text",style:"margin-left:5px;width:80%"}).val(rule.weight||"1").appendTo(label4)
 
                     var finalspan = $('<span/>',{style:"position:absolute;top:50%;right:26px;margin-top: -9px;"}).appendTo(container);
                     finalspan.append(' &#8594; <span class="node-input-rule-index">'+(i+1)+'</span> ');

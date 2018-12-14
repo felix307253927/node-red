@@ -1,0 +1,83 @@
+domainName: 餐厅
+speakerIconURL:
+  male: man url
+  female: woman url
+bgPicURL: background pic url
+iconURL: icon pic url
+nodeList:
+- name: node1
+  nodeID: node1id
+  text: node1
+  speakerVoices:
+    male: male url
+    female: female url
+  translate: node1
+  duration: 2
+  status: start
+  picURL: node1 pic url
+  wildcardList:
+  - node2id
+  nextNodes:
+  - nextNodeID:
+    - node2id
+    - node3id
+    patternGroupID: pg id1
+    weight: 10
+  - nextNodeID:
+    - node2id
+    patternGroupID: pg id2
+    weight: 9
+- name: node2
+  nodeID: node2id
+  text: node2
+  speakerVoices:
+    male: male url
+    female: female url
+  translate: node2
+  duration: 2
+  picURL: node1 pic url
+  wildcardList:
+  - node3id
+  nextNodes:
+  - nextNodeID:
+    - node1id
+    - node3id
+    patternGroupID: pg id1
+    weight: 10
+- name: node3
+  nodeID: node3id
+  text: node3
+  speakerVoices:
+    male: male url
+    female: female url
+  translate: node3
+  duration: 5
+  status: end
+  picURL: node3 pic url
+  wildcardList:
+  nextNodes:
+patternGroupList:
+- patternGroupID: pg id1
+  patternGroupName: pg name1
+  patterns:
+  - oriPattern: pg1 oripattern1
+    sample: 'pg1 sample1'
+    weight: 4
+  - oriPattern: pg1 oripattern2
+    sample: pg1 sample2
+    weight: 5
+- patternGroupID: pg id2
+  patternGroupName: pg name2
+  patterns:
+  - oriPattern: pg2 oripattern1
+    sample: pg2 sample1
+    weight: 4
+  - oriPattern: pg2 oripattern2
+    sample: pg2 sample2
+    weight: 5
+  - oriPattern: pg2 oripattern3
+    sample: pg2 sample3
+    weight: 10
+
+
+     

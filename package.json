@@ -10,7 +10,7 @@
   },
   "main": "red/red.js",
   "scripts": {
-    "start": "node red.js",
+    "start": "npm run dev && node red.js",
     "dev": "grunt dev",
     "test": "grunt",
     "build": "grunt build",

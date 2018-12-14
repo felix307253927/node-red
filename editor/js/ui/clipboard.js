@@ -343,6 +343,7 @@ RED.clipboard = (function () {
     function getRules(ruleNode, nodeList) {
         var patterns = [],
             nextName = []
+            console.log(ruleNode);
         ruleNode.rules.forEach(function(r) {
             patterns.push({
                 oriPattern: r.oriPattern,
@@ -383,32 +384,58 @@ RED.clipboard = (function () {
 
     function formatJson(arr) {
         var nodeList = []
+        var patternList = []
         var ret = {
             domainName: "",
-            nodeList: nodeList
+            nodeList: nodeList,
+            patternGroupList: patternList
         }
         var nNodes = arr.filter(function(r) {return r.type !== 'rule'})
         arr.forEach(function(node) {
             if (node.type === 'tab') {
-                ret.domainName = node.label
+                ret.domainName = node.label||""
+                ret.bgPicURL = node.bgPic||""
+                ret.iconURL = node.icn||""
+                ret.speakerIconURL = {
+                    male: node.male||"",
+                    female: node.female||"",
+                }
             } else if (node.type !== 'rule') {
                 var next = {
-                    name: node.name,
-                    text: node.text,
-                    URL: node.URL,
-                    translate: node.translate,
+                    nodeID: node.id,
+                    name: node.name||"",
+                    text: node.text||"",
+                    speakerVoices:{
+                        male: node.male||"",
+                        female: node.female||"",
+                    },
+                    translate: node.translate||"",
                     duration: +node.duration || 0,
                     status: node.type,
-                    wildcard: []
+                    wildcardList: []
                 }
                 if (node.type !== 'end') {
                     next.nextNodes = []
-                    var nexts = findNextNode(node.wires, arr)
-                    nexts.forEach(function(n) {
+                    var nextNodes = findNextNode(node.wires, arr)
+                    nextNodes.forEach(function(n) {
                         if (n.type === 'rule') {
-                            next.nextNodes.push(getRules(n, nNodes))
+                            next.nextNodes.push({
+                                patternGroupID: n.id,
+                                nextNodeID: n.wires[0] || [],
+                                // weight: n.weight||1
+                            })
+                            patternList.push({
+                                patternGroupID: n.id,
+                                patternGroupName: n.name||"",
+                                // weight: n.weight||1,
+                                patterns: n.rules.map(r=>({
+                                    oriPattern: r.oriPattern||"",
+                                    sample: r.sample||"",
+                                    weight: r.weight||1
+                                }))
+                            })
                         } else if (n.type === 'wildcard') {
-                            next.wildcard.push(n.name)
+                            next.wildcardList.push(n.id)
                         }
                     })
                     // patterns: getRules(findNextNode(node.wires, arr)[0], arr)
